@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1611960610 source:c:\users\hkril\documents\github\egr226_hayden_krile\egr226_lab2_part1\main.c
+	<stdio.h>
+	<stdlib.h>
+
