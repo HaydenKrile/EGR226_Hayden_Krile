@@ -38,7 +38,6 @@ int main(){
             printf("Enter 1 for resistance to color code\nEnter 2 for color code to resistance\n");
             count = scanf("%d", &decision);
 
-           //if the input is less than 1, greater than 99000000, or a letter, the user is asked to enter again
            if (count == 0 || decision < 1 || decision > 2)
               {
               printf("\nINPUT ERROR!\n\n");
@@ -87,30 +86,25 @@ int main(){
 
 
 void prompt(void) {
-
     //this is the prompt for the colors of the resistors and what they mean
-printf("--------------------Resistor Codes---------------------\n");
- printf("|Character|  Color | Band 1 & 2 |   Band 3  |  Band 4  |\n");
- printf("|    K    | Black  |      0     |*1         |+/- 1%%    |\n");
- printf("|    N    | Brown  |      1     |*10        |+/- 2%%    |\n");
- printf("|    R    |  Red   |      2     |*100       |          |\n");
- printf("|    O    | Orange |      3     |*1,000     |          |\n");
- printf("|    Y    | Yellow |      4     |*10,000    |          |\n");
- printf("|    G    | Green  |      5     |*100,000   |+/- 0.5%%  |\n");
- printf("|    B    |  Blue  |      6     |*1,000,000 |+/- 0.25%% |\n");
- printf("|    V    | Violet |      7     |*10,000,000|+/- 0.1%%  |\n");
- printf("|    E    |  Grey  |      8     |           |+/- 0.05%% |\n");
- printf("|    W    |  White |      9     |           |          | \n");
- printf("|    D    |  Gold  |            |           |+/- 5%%    |\n");
- printf("|    S    | Silver |            |           |+/- 10%%   |\n");
- printf("-------------------------------------------------------\n\n");
-
-
+    printf("--------------------Resistor Codes---------------------\n");
+    printf("|Character|  Color | Band 1 & 2 |   Band 3  |  Band 4  |\n");
+    printf("|    K    | Black  |      0     |*1         |+/- 1%%    |\n");
+    printf("|    N    | Brown  |      1     |*10        |+/- 2%%    |\n");
+    printf("|    R    |  Red   |      2     |*100       |          |\n");
+    printf("|    O    | Orange |      3     |*1,000     |          |\n");
+    printf("|    Y    | Yellow |      4     |*10,000    |          |\n");
+    printf("|    G    | Green  |      5     |*100,000   |+/- 0.5%%  |\n");
+    printf("|    B    |  Blue  |      6     |*1,000,000 |+/- 0.25%% |\n");
+    printf("|    V    | Violet |      7     |*10,000,000|+/- 0.1%%  |\n");
+    printf("|    E    |  Grey  |      8     |           |+/- 0.05%% |\n");
+    printf("|    W    |  White |      9     |           |          | \n");
+    printf("|    D    |  Gold  |            |           |+/- 5%%    |\n");
+    printf("|    S    | Silver |            |           |+/- 10%%   |\n");
+    printf("-------------------------------------------------------\n\n");
 }
 
 void calcResistorColors(int resistor){
-
-
     //these ints hold the numerical value of the colored bands
     int bandNumOne;
     int bandNumTwo;
@@ -327,6 +321,92 @@ void calcResistance(char colorOne, char colorTwo, char colorThree, char ColorFou
             break;
     }
 
+    switch(colorTwo){
+        case 'K':
+            break;
+        case 'N':
+            totalResistance = totalResistance + 1;
+            break;
+        case 'R':
+            totalResistance = totalResistance + 2;
+            break;
+        case 'O':
+            totalResistance = totalResistance + 3;
+            break;
+        case 'Y':
+            totalResistance = totalResistance + 4;
+            break;
+        case 'G':
+            totalResistance = totalResistance + 5;
+            break;
+        case 'B':
+            totalResistance = totalResistance + 6;
+            break;
+        case 'V':
+            totalResistance = totalResistance + 7;
+            break;
+        case 'E':
+            totalResistance = totalResistance + 8;
+            break;
+        case 'W':
+            totalResistance = totalResistance + 9;
+            break;
+    }
+
+    switch(colorThree){
+        case 'K':
+            break;
+        case 'N':
+            totalResistance = totalResistance * 10;
+            break;
+        case 'R':
+            totalResistance = totalResistance * 100;
+            break;
+        case 'O':
+            totalResistance = totalResistance * 1000;
+            break;
+        case 'Y':
+            totalResistance = totalResistance * 10000;
+            break;
+        case 'G':
+            totalResistance = totalResistance * 100000;
+            break;
+        case 'B':
+            totalResistance = totalResistance * 1000000;
+            break;
+        case 'V':
+            totalResistance = totalResistance * 10000000;
+            break;
+    }
+
+    printf("Your resistor is %d ", totalResistance);
+
+    switch(ColorFour){
+        case 'K':
+            printf("+/- 1%% Ohms\n");
+            break;
+        case 'N':
+            printf("+/- 2%% Ohms\n");
+            break;
+        case 'G':
+            printf("+/- 0.5%% Ohms\n");
+            break;
+        case 'B':
+            printf("+/- 0.25%% Ohms\n");
+            break;
+        case 'V':
+            printf("+/- 0.1%% Ohms\n");
+            break;
+        case 'E':
+            printf("+/- 0.05%% Ohms\n");
+            break;
+        case 'D':
+            printf("+/- 5%% Ohms\n");
+            break;
+        case 'S':
+            printf("+/- 10%% Ohms\n");
+            break;
+    }
 }
 
 
