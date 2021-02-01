@@ -292,6 +292,40 @@ void getColorBands(char *one, char *two, char *three, char *four){
 
 void calcResistance(char colorOne, char colorTwo, char colorThree, char ColorFour){
 
+    int totalResistance;
+
+    switch(colorOne){
+        case 'K':
+            totalResistance = 0;
+            break;
+        case 'N':
+            totalResistance = 10;
+            break;
+        case 'R':
+            totalResistance = 20;
+            break;
+        case 'O':
+            totalResistance = 30;
+            break;
+        case 'Y':
+            totalResistance = 40;
+            break;
+        case 'G':
+            totalResistance = 50;
+            break;
+        case 'B':
+            totalResistance = 60;
+            break;
+        case 'V':
+            totalResistance = 70;
+            break;
+        case 'E':
+            totalResistance = 80;
+            break;
+        case 'W':
+            totalResistance = 90;
+            break;
+    }
 
 }
 
