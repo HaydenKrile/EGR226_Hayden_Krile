@@ -1,11 +1,11 @@
 /**************************************************************************************
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
-* Date:        01/28/2021
-* Project:     ResistorLab
+* Date:        02/04/2021
+* Project:     ResistorLabPart2
 * File:        main.c
 * Description: This program determines the color-code of a 4-band resistor given a user
-*                   inputted resistor value between 1-99M. The program is designed to
+*                   inputted resistor value between 1-99M or color code to resistance value. The program is designed to
 *                   detect invalid inputs and clear them out and ask for a proper one.
 *                   This program can be repeated at the users request or ended at their desire.
 ***************************************************************************************/
@@ -84,7 +84,16 @@ int main(){
     }
 }
 
-
+/*-----------------------------------------------------------
+* Function: prompt
+* Description: prints the resistor chart for the users convenience
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void prompt(void) {
     //this is the prompt for the colors of the resistors and what they mean
     printf("--------------------Resistor Codes---------------------\n");
@@ -104,6 +113,16 @@ void prompt(void) {
     printf("-------------------------------------------------------\n\n");
 }
 
+/*-----------------------------------------------------------
+* Function: calcResistorColors
+* Description: Takes in the users inputted resistance value and converts that value to
+*               a color-code and prints it to the console
+* Inputs:
+*              int resistor: resistance value inputted by the user
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void calcResistorColors(int resistor){
     //these ints hold the numerical value of the colored bands
     int bandNumOne;
@@ -225,6 +244,19 @@ void calcResistorColors(int resistor){
         }
     }
 
+    /*-----------------------------------------------------------
+* Function: getColorBands
+* Description: asks the user for the resistor band colors and sends the valid inputs
+                back to the variables in main through pointers
+* Inputs:
+*              char *one: pointer to first band variable
+*              char *two: pointer to second band variable
+*              char *three: pointer to third band variable
+*              char *four: pointer to fourth band variable
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void getColorBands(char *one, char *two, char *three, char *four){
 
     char firstTwoBand[SIZE] = "KNROYGBVEW";
@@ -284,6 +316,19 @@ void getColorBands(char *one, char *two, char *three, char *four){
     } while (!strchr(fourthBand, *four));
 }
 
+/*-----------------------------------------------------------
+* Function: calcResistance
+* Description: takes in the users four bands as chars and converts those into resistor values
+                and print the total resistance value and tolerance to the console
+* Inputs:
+*              char colorOne: color of the first band
+*              char colorTwo: color of the second band
+*              char colorThree: color of the third band
+*              char colorFour: color of the fourth band
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void calcResistance(char colorOne, char colorTwo, char colorThree, char ColorFour){
 
     int totalResistance;
@@ -408,9 +453,3 @@ void calcResistance(char colorOne, char colorTwo, char colorThree, char ColorFou
             break;
     }
 }
-
-
-
-
-
-
