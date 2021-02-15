@@ -1,0 +1,29 @@
+#include "msp.h"
+
+
+/**
+ * main.c
+ */
+//uint8_t DebounceSwitch1(void);
+
+void main(void)
+{
+
+    P2->SEL1 &= ~7;
+    P2->SEL0 &= ~7;
+    P2->DIR |= 7;
+
+    while(1){
+
+        P2->OUT |= 1;
+        __delay_cycles(3000000);
+        P2->OUT &= ~1;
+        P2->OUT |= 2;
+        __delay_cycles(3000000);
+        P2->OUT &= ~2;
+        P2->OUT |= 4;
+        __delay_cycles(3000000);
+        P2->OUT &= ~4;
+    }
+
+}

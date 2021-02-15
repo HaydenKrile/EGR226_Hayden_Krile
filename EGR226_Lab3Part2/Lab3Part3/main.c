@@ -13,7 +13,7 @@ void main(void)
 	int i;
 	while(1){
 	    P1->OUT ^= BIT0;
-	    for(i=20000; i>0; i--);
+	    for(i; i>0; i--);
 
 	}
 }

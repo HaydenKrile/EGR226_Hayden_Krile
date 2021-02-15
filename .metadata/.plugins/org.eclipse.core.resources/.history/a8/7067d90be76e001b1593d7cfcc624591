@@ -1,0 +1,30 @@
+#include "msp.h"
+
+
+/**
+ * main.c
+ */
+int DebounceFunction1(void);
+
+void main(void)
+{
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
+
+	P1->DIR = BIT0;
+
+	while(1){
+	    if(1){
+	        P1OUT ^= BIT0;
+	    }
+	}
+}
+
+int DebounceSwitch1(void){
+    int pin_Value = 0;
+    if((P1IN & 0x02) == 0x00){
+        __delay_cycles(30000);
+        if((P1IN & 0x02) == 0x00)
+            pin_Value = 1;
+    }
+    return pin_Value;
+}

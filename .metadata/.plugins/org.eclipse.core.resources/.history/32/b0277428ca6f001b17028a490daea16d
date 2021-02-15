@@ -1,0 +1,44 @@
+#include "msp.h"
+
+
+/**
+ * main.c
+ */
+uint8_t DebounceSwitch1();
+
+void main(void)
+{
+
+    P2->SEL1 &= ~7;
+    P2->SEL0 &= ~7;
+    P2->DIR |= 0x07;
+    P1->DIR |= 0x01;
+
+
+    while(1){
+
+        if(DebounceSwitch1()){
+            P2->OUT |= 1;
+        }
+        else{
+            P2->OUT &= ~1;
+        }
+    }
+
+}
+
+uint8_t DebounceSwitch1(){
+
+    static uint16_t buttonValue = 0;
+
+    buttonValue = ((P1IN & BIT1) / BIT1) | (buttonValue<<1) | 0xF800;
+    __delay_cycles(10);
+
+    if(button == 0xFC00){
+        return 1;
+    }
+
+    else{
+        return 0;
+    }
+}

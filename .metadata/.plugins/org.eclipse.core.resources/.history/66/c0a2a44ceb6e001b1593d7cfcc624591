@@ -1,0 +1,31 @@
+#include "msp.h"
+
+
+/**
+ * main.c
+ */
+uint8_t DebounceSwitch1(void);
+
+void main(void)
+{
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
+
+	P1->DIR = BIT0;
+
+	while(1){
+	    if(DebounceSwitch1()){
+	        P1OUT ^= BIT0;
+	    }
+	}
+}
+
+uint8_t DebounceSwitch1(void){
+    static uint16_t State = 0;
+    State = (State<<1) | ((P1IN & BIT1)>>1) | 0xf800;
+        __delay_cycles(5);
+
+    if(State == 0xfc00)
+        return 1;
+
+    return 0;
+}
