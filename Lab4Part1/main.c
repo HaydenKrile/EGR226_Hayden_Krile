@@ -2,7 +2,7 @@
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
 * Date:        02/15/2021
-* Project:     MSP432 LED
+* Project:     Lab4Part1
 * File:        main.c
 * Description: This program connects to the MSP432 and allows the user to cycle
 *                   through red, green and blue by pressing the on-board button.

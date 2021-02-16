@@ -1,0 +1,32 @@
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        02/16/2021
+* Project:     Lab4Part2
+* File:        main.c
+* Description: This program connects to the MSP432 and allows the user to cycle
+*                   through red, green and blue by pressing the on-board button.
+*                   The program uses a function to account for debounce in
+*                   the button and prevents the debounce from altering the input from the user
+***************************************************************************************/
+
+#include "msp.h"
+
+void main(void)
+{
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
+
+	//sets P1.1 to a GPIO
+    P1->SEL1 &= ~BIT1;
+    P1->SEL0 &= ~BIT1;
+    //sets P1.1 to input
+    P1->DIR &= ~BIT1;
+    //the internal resistor is enabled
+    P1->REN |= BIT1;
+    // sets the resistor as a pull up resistor
+    P1->OUT |= BIT1;
+    //sets the LED's as outputs
+    P2->DIR |= BIT0;
+    P2->DIR |= BIT1;
+    P2->DIR |= BIT2;
+}
