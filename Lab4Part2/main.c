@@ -5,11 +5,10 @@
 * Project:     Lab4Part2
 * File:        main.c
 * Description: This program connects to the MSP432 and cycles through red,
-*                   green, and blue on the RGB LED. If the user pushes and
-*                   holds the on-board button, the LED will hold on the
-*                   color the LED is currently showing until the user continues
-*                   to hold the button again. If the user releases the button, the program will
-*                   go back to cycling between the LED colors.
+*                   green, and blue on the RGB LED ff the user pushes and
+*                   holds the on-board button. When the button is released,
+*                   the LED will hold on the color the LED is currently showing until the user
+*                  holds the button down again.
 ***************************************************************************************/
 
 #include "msp.h"
