@@ -51,19 +51,13 @@ void main(void)
 
         //if the color state is red:
         case 'R':
-
             if((P1IN & BIT1) == 0){
                 //red LED is turned on
                 P2->OUT |= BIT0;
                 //the program waits half a second to see if the user holds the button
                 holdButton = pause();
-                //if the button is pushed in the half-second delay:
-                if(holdButton == 1) {
-                    //the red LED is turned on and wont switch states
-                    P2->OUT |= BIT0;
-                }
-                //if the button wasnt pushed or was released after the half-second delay:
-                else{
+                //if the button wasn't released after the half-second delay:
+                if(holdButton == 0) {
                     //turns off the red LED
                     P2->OUT &= ~BIT0;
                     //sets the state variable to green
@@ -80,16 +74,11 @@ void main(void)
                 P2->OUT |= BIT1;
                 //the program waits half a second to see if the user holds the button
                 holdButton = pause();
-                //if the button is pushed in the half-second delay:
-                if(holdButton == 1) {
-                    //the green LED is turned on and wont switch states
-                    P2->OUT |= BIT1;
-                }
-                //if the button wasnt pushed or was released after the half-second delay:
-                else{
+                //if the button wasn't released after the half-second delay:
+                if(holdButton == 0) {
                     //turns off the green LED
                     P2->OUT &= ~BIT1;
-                    //sets the state variable to grblue
+                    //sets the state variable to blue
                     lightColor = 'B';
                 }
             }
@@ -103,16 +92,11 @@ void main(void)
                 P2->OUT |= BIT2;
                 //the program waits half a second to see if the user holds the button
                 holdButton = pause();
-                //if the button is pushed in the half-second delay:
-                if(holdButton == 1) {
-                    //the blue LED is turned on and wont switch states
-                    P2->OUT |= BIT2;
-                }
-                //if the button wasnt pushed or was released after the half-second delay:
-                else{
+                //if the button wasn't released after the half-second delay:
+                if(holdButton == 0) {
                     //turns off the blue LED
                     P2->OUT &= ~BIT2;
-                    //sets the state variable to grred
+                    //sets the state variable to red
                     lightColor = 'R';
                 }
             }
