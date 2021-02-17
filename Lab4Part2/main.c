@@ -7,7 +7,9 @@
 * Description: This program connects to the MSP432 and cycles through red,
 *                   green, and blue on the RGB LED. If the user pushes and
 *                   holds the on-board button, the LED will hold on the
-*                   the button and prevents the debounce from altering the input from the user
+*                   color the LED is currently showing until the user continues
+*                   to hold the button again. If the user releases the button, the program will
+*                   go back to cycling between the LED colors.
 ***************************************************************************************/
 
 #include "msp.h"
@@ -37,51 +39,80 @@ void main(void)
     P2->OUT &= ~BIT1;
     P2->OUT &= ~BIT2;
 
-    //creates the switch statement varibale and set the initial state to red
+    //creates the switch statement variable and set the initial state to red
     char lightColor = 'R';
     //variable used to detect when the button is being held down
     int holdButton;
 
+    //infinite while loop
     while (1){
+        //the color of the LED is checked with this switch statement
         switch(lightColor){
 
+        //if the color state is red:
         case 'R':
+
             if((P1IN & BIT1) == 0){
+                //red LED is turned on
                 P2->OUT |= BIT0;
+                //the program waits half a second to see if the user holds the button
                 holdButton = pause();
+                //if the button is pushed in the half-second delay:
                 if(holdButton == 1) {
+                    //the red LED is turned on and wont switch states
                     P2->OUT |= BIT0;
                 }
+                //if the button wasnt pushed or was released after the half-second delay:
                 else{
+                    //turns off the red LED
                     P2->OUT &= ~BIT0;
+                    //sets the state variable to green
                     lightColor = 'G';
                 }
             }
             break;
 
+        //if the color state is green:
         case 'G':
+            //if the button isnt being held:
             if((P1IN & BIT1) == 0){
+                //green LED is turned on
                 P2->OUT |= BIT1;
+                //the program waits half a second to see if the user holds the button
                 holdButton = pause();
+                //if the button is pushed in the half-second delay:
                 if(holdButton == 1) {
+                    //the green LED is turned on and wont switch states
                     P2->OUT |= BIT1;
                 }
+                //if the button wasnt pushed or was released after the half-second delay:
                 else{
+                    //turns off the green LED
                     P2->OUT &= ~BIT1;
+                    //sets the state variable to grblue
                     lightColor = 'B';
                 }
             }
             break;
 
+        //if the color state is blue:
         case 'B':
+            //if the button isnt being held:
             if((P1IN & BIT1) == 0){
+                //blue LED is turned on
                 P2->OUT |= BIT2;
+                //the program waits half a second to see if the user holds the button
                 holdButton = pause();
+                //if the button is pushed in the half-second delay:
                 if(holdButton == 1) {
+                    //the blue LED is turned on and wont switch states
                     P2->OUT |= BIT2;
                 }
+                //if the button wasnt pushed or was released after the half-second delay:
                 else{
+                    //turns off the blue LED
                     P2->OUT &= ~BIT2;
+                    //sets the state variable to grred
                     lightColor = 'R';
                 }
             }
@@ -90,18 +121,33 @@ void main(void)
     }
 }
 
+/*-----------------------------------------------------------
+* Function: pause
+* Description: This function checks to see if the user is pressing and holding the button
+*                   on the MSP432. If the user is pressing and holding the button, the program returns true,
+*                   but if the user releases the button and 0.5 seconds pass, the program will then return false.
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 int pause(){
 
     int i;
 
+    //this for loop checks 500 times to see if the button is held every 3000 cycles, resulting in a 0.5 second delay with a 3 mHz clock
     for(i = 0; i <= 500; i++){
 
+        //if the button is detected to be pressed, the function returns true
         if(P1IN & BIT1){
             return 1;
         }
+        //the function is delayed 3000 cycles
         __delay_cycles(3000);
     }
 
+    // if no button input was detected in the 0.5 second delay, the program returns false
     return 0;
 
 }
