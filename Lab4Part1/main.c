@@ -103,7 +103,7 @@ uint8_t DebounceSwitch1(){
 
     buttonValue = ((P1IN & BIT1) / BIT1) | (buttonValue<<1) | 0xF800;
     //small delay to account for debounce
-    __delay_cycles(100);
+    __delay_cycles(1000);
 
     //return true of the button was pressed
     if(buttonValue == 0xFC00){

@@ -9,3 +9,11 @@
 **/.launches/*
 **/targetConfigs
 **/targetConfigs/*
+dvt
+dvt/*
+.jxbrowser-data
+.jxbrowser-data/*
+.metadata
+.metadata/*
+RemoteSystemTempFiles
+RemoteSystemTempFiles/*
