@@ -1,23 +1,137 @@
 /**************************************************************************************
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
-* Date:        02/23/2021
-* Project:     Lab5Part2
+* Date:        02/21/2021
+* Project:     Lab5Part3
 * File:        main.c
 * Description: This program connects to the MSP432 and cycles through green,
 *                   yellow, and red LEDs if the user pushes and
-*                   holds the off-board button. When the button is released,
-*                   the LED will hold on the color that is is currently showing until the user
-*                  holds the button down again.
+*                   holds one of two off-board buttons. When the White button
+*                   is pressed, the program cycles Green-Yellow-Red; and when the
+*                   black button in pressed, the program cycles Red-Yellow-Green.
+*                   When the user holds either button, the LEDs cycle every one second,
+*                   and when the user releases a button, the LED that was on is held until
+*                   the user holds a button again.
 ***************************************************************************************/
 
 #include "msp.h"
 
+void pinSet(void);
+void SysTick_Init(void);
+void SysTick_delay(uint16_t delay);
 int pause1();
 int pause2();
 
 void main(void)
 {
+    //sets all the pins on the MSP to be used by the program
+    pinSet();
+    //initialize SysTick timer
+    SysTick_Init();
+
+    //creates the switch statement variable and set the initial state to green
+    char lightColor = 'G';
+    //variables used to detect when a button is being held down
+    int holdButton1, holdButton2;
+
+    //infinite while loop
+    while (1){
+        //the color of the LED is checked with this switch statement
+        switch(lightColor){
+
+        //if the color state is red:
+        case 'R':
+            //if a button isn't being held:
+            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
+                //red LED is turned on
+                P2->OUT |= BIT4;
+                //the program waits a second to see if the user holds a button
+                holdButton1 = pause1();
+                holdButton2 = pause2();
+                //if the white button wasn't released after the second delay:
+                if(holdButton1 == 0) {
+                    //turns off the red LED
+                    P2->OUT &= ~BIT4;
+                    //sets the state variable to green
+                    lightColor = 'G';
+                }
+                //if the black button wasn't released after the second delay:
+                if(holdButton2 == 0) {
+                    //turns off the red LED
+                    P2->OUT &= ~BIT4;
+                    //sets the state variable to yellow
+                    lightColor = 'Y';
+                }
+            }
+            break;
+
+        //if the color state is green:
+        case 'G':
+            //if a button isn't being held:
+            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
+                //green LED is turned on
+                P2->OUT |= BIT6;
+                //the program waits a second to see if the user holds a button
+                holdButton1 = pause1();
+                holdButton2 = pause2();
+                //if the white button wasn't released after the second delay:
+                if(holdButton1 == 0) {
+                    //turns off the green LED
+                    P2->OUT &= ~BIT6;
+                    //sets the state variable to yellow
+                    lightColor = 'Y';
+                }
+                //if the black button wasn't released after the second delay:
+                if(holdButton2 == 0) {
+                    //turns off the green LED
+                    P2->OUT &= ~BIT6;
+                    //sets the state variable to red
+                    lightColor = 'R';
+                }
+            }
+            break;
+
+        //if the color state is yellow:
+        case 'Y':
+            //if a button isn't being held:
+            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
+                //yellow LED is turned on
+                P2->OUT |= BIT5;
+                //the program waits a second to see if the user holds a button
+                holdButton1 = pause1();
+                holdButton2 = pause2();
+                //if the white button wasn't released after the second delay:
+                if(holdButton1 == 0) {
+                    //turns off the yellow LED
+                    P2->OUT &= ~BIT5;
+                    //sets the state variable to red
+                    lightColor = 'R';
+                }
+                //if the black button wasn't released after the second delay:
+                if(holdButton2 == 0) {
+                    //turns off the yellow LED
+                    P2->OUT &= ~BIT5;
+                    //sets the state variable to green
+                    lightColor = 'G';
+                }
+            }
+            break;
+        }
+    }
+}
+
+/*-----------------------------------------------------------
+* Function: pinSet
+* Description: This function sets each of the MSP432 pins used in the program
+*                   to their respective I/O, and also enables the internal
+*                   pull-down resistor for the buttons.
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
+void pinSet(){
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
 
     //sets P5.1 to a GPIO
@@ -44,100 +158,54 @@ void main(void)
     P2->DIR |= 0x70;
     //turns off all LEDs
     P2->OUT &= ~0x70;
+}
 
-    //creates the switch statement variable and set the initial state to green
-    char lightColor = 'G';
-    //variable used to detect when the button is being held down
-    int holdButton1, holdButton2;
+/*-----------------------------------------------------------
+* Function: SysTick_Init
+* Description: This function enables the SysTick timer for
+*                   use in accurate delays.
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
+void SysTick_Init(){
+    //disable SysTick During this step
+    SysTick->CTRL = 0;
+    //max reload value
+    SysTick->LOAD = 0x00FFFFFF;
+    //any write to current clears it
+    SysTick->VAL = 0;
+    //enable systic, 3MHz, no interupts
+    SysTick->CTRL = 0x00000005;
+}
 
-    //infinite while loop
-    while (1){
-        //the color of the LED is checked with this switch statement
-        switch(lightColor){
-
-        //if the color state is red:
-        case 'R':
-            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
-                //red LED is turned on
-                P2->OUT |= BIT4;
-                //the program waits half a second to see if the user holds a button
-                holdButton1 = pause1();
-                holdButton2 = pause2();
-                //if the button wasn't released after the half-second delay:
-                if(holdButton1 == 0) {
-                    //turns off the red LED
-                    P2->OUT &= ~BIT4;
-                    //sets the state variable to green
-                    lightColor = 'G';
-                }
-                if(holdButton2 == 0) {
-                    //turns off the red LED
-                    P2->OUT &= ~BIT4;
-                    //sets the state variable to yellow
-                    lightColor = 'Y';
-                }
-            }
-            break;
-
-        //if the color state is green:
-        case 'G':
-            //if the button isnt being held:
-            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
-                //green LED is turned on
-                P2->OUT |= BIT6;
-                //the program waits half a second to see if the user holds a button
-                holdButton1 = pause1();
-                holdButton2 = pause2();
-                //if the button wasn't released after the half-second delay:
-                if(holdButton1 == 0) {
-                    //turns off the green LED
-                    P2->OUT &= ~BIT6;
-                    //sets the state variable to yellow
-                    lightColor = 'Y';
-                }
-                if(holdButton2 == 0) {
-                    //turns off the green LED
-                    P2->OUT &= ~BIT6;
-                    //sets the state variable to red
-                    lightColor = 'R';
-                }
-            }
-            break;
-
-        //if the color state is yellow:
-        case 'Y':
-            //if the button isnt being held:
-            if(((P5IN & BIT1) & (P4IN & BIT1)) == 0){
-                //yellow LED is turned on
-                P2->OUT |= BIT5;
-                //the program waits half a second to see if the user holds a button
-                holdButton1 = pause1();
-                holdButton2 = pause2();
-                //if the button wasn't released after the half-second delay:
-                if(holdButton1 == 0) {
-                    //turns off the yellow LED
-                    P2->OUT &= ~BIT5;
-                    //sets the state variable to red
-                    lightColor = 'R';
-                }
-                //if button2 wasn't released after the half-second delay:
-                if(holdButton2 == 0) {
-                    //turns off the yellow LED
-                    P2->OUT &= ~BIT5;
-                    //sets the state variable to green
-                    lightColor = 'G';
-                }
-            }
-            break;
-        }
-    }
+/*-----------------------------------------------------------
+* Function: SysTick_Delay
+* Description: This function takes in a milisecond value and uses
+*                   the SysTick timer to delay until the specified amount
+*                   of time has passed.
+* Inputs:
+*              uint16_t delay
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
+void SysTick_delay(uint16_t delay){
+    //delay for 1 ms per delay value
+    SysTick->LOAD = ((delay * 3000) - 1);
+    //any write to CRV clears it
+    SysTick->VAL = 0;
+    //wait for flag to be SET
+    while((SysTick->CTRL & 0x00010000) == 0);
 }
 
 /*-----------------------------------------------------------
 * Function: pause1
-* Description: This function checks to see if the user is pressing and holding the button.
-*                   If the user is pressing and holding the button, the program returns true,
-*                   but if the user releases the button and 0.5 seconds pass, the program will then return false.
+* Description: This function checks to see if the user is pressing and holding the white button.
+*                   If the user is pressing and holding the button, the program returns false,
+*                   but if the user releases the button and a second passes, the program will then return true.
 * Inputs:
 *              N/A
 *
@@ -148,27 +216,25 @@ int pause1(){
 
     int i;
 
-    //this for loop checks 500 times to see if the button is held every 3000 cycles, resulting in a 0.5 second delay with a 3 mHz clock
+    //this for loop checks 500 times to see if the button is held every 2ms, resulting in a second delay with a 3 mHz clock
     for(i = 0; i <= 500; i++){
 
-        //if the button is detected to be pressed, the function returns true
+        //if the button is detected to be not pressed, the function returns true
         if(P5IN & BIT1){
             return 1;
         }
-        //the function is delayed 3000 cycles
-        __delay_cycles(3000);
+        //2ms delay
+        SysTick_delay(2);
     }
-
-    // if no button input was detected in the 0.5 second delay, the program returns false
+    // if a button input was detected in the second delay, the program returns false
     return 0;
-
 }
 
 /*-----------------------------------------------------------
 * Function: pause2
-* Description: This function checks to see if the user is pressing and holding the button.
-*                   If the user is pressing and holding the button, the program returns true,
-*                   but if the user releases the button and 0.5 seconds pass, the program will then return false.
+* Description: This function checks to see if the user is pressing and holding the black button.
+*                   If the user is pressing and holding the button, the program returns false,
+*                   but if the user releases the button and a second passes, the program will then return true.
 * Inputs:
 *              N/A
 *
@@ -179,18 +245,16 @@ int pause2(){
 
     int i;
 
-    //this for loop checks 500 times to see if the button is held every 3000 cycles, resulting in a 0.5 second delay with a 3 mHz clock
+    //this for loop checks 500 times to see if the button is held every 2ms, resulting in a second delay with a 3 mHz clock
     for(i = 0; i <= 500; i++){
 
-        //if the button is detected to be pressed, the function returns true
+        //if the button is detected to be not pressed, the function returns true
         if(P4IN & BIT1){
             return 1;
         }
-        //the function is delayed 3000 cycles
-        __delay_cycles(3000);
+        //2ms delay
+        SysTick_delay(2);
     }
-
-    // if no button input was detected in the 0.5 second delay, the program returns false
+    // if a button input was detected in the second delay, the program returns false
     return 0;
-
 }
