@@ -163,7 +163,7 @@ void SysTick_delay(uint16_t delay){
 }
 
 /*-----------------------------------------------------------
-* Function: pause1
+* Function: pause
 * Description: This function checks to see if the user is pressing and holding the white button.
 *                   If the user is pressing and holding the button, the program returns true,
 *                   but if the user releases the button and a second passes, the program will then return false.
