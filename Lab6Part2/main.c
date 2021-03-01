@@ -14,12 +14,12 @@ int holding(void);
  * main.c
  */
 void main(void){
-    int key, holdingCheck;
+    int key, holdingCheck, firstNum, secondNum, thirdNum, fourthNum;
     int isFourNumbersLong = FALSE;
 
      enum entry{number1, number2, number3, number4};
-     enum entry currentNumber;
-     currentNumber = number1;
+     enum entry currentState;
+     currentState = number1;
 
      //initalize the keypad
      Keypad_Init();
@@ -33,11 +33,238 @@ void main(void){
          //read the keypad entry
          key = Keypad_Read();
          //if a key was pressed
-         if(key)
-             switch(currentNumber){
+         if(key) {
+             switch(currentState){
                  case number1:
+                     switch(key){
+                         case 10:
+                             printf("Invalid input! Try again\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
 
+                         case 11:
+                             firstNum = 0;
+                             printf("Input stored in value 1!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number2;
+                             break;
+
+                         case 12:
+                             if(isFourNumbersLong == TRUE)
+                                 printf("Your code is: %d%d%d%d\n", firstNum, secondNum, thirdNum, fourthNum);
+                             else{
+                                 printf("Invalid input! Try again\n");
+                                 }
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         default:
+                             firstNum = key;
+                             printf("Input stored in value 1!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number2;
+                             break;
+                     }
+                     break;
+
+                 case number2:
+                     switch(key){
+                         case 10:
+                             printf("Invalid input! Try again\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         case 11:
+                             secondNum = 0;
+                             printf("Input stored in value 2!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number3;
+                             break;
+
+                         case 12:
+                             if(isFourNumbersLong == TRUE)
+                                 printf("Your code is: %d%d%d%d\n", firstNum, secondNum, thirdNum, fourthNum);
+
+                             else{
+                                 printf("Invalid input! Try again\n");
+                             }
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         default:
+                             secondNum = key;
+                             printf("Input stored in value 2!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number3;
+                             break;
+                     }
+                     break;
+
+                 case number3:
+                     switch(key){
+                         case 10:
+                             printf("Invalid input! Try again\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         case 11:
+                             thirdNum = 0;
+                             printf("Input stored in value 3!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number4;
+                             break;
+
+                         case 12:
+                             if(isFourNumbersLong == TRUE)
+                                 printf("Your code is: %d%d%d%d\n", firstNum, secondNum, thirdNum, fourthNum);
+
+                             else{
+                                 printf("Invalid input! Try again\n");
+                                 }
+                             //check to see if the key is still pressed
+                            holdingCheck = holding();
+                            //pause the function while the key is held
+                            while(holdingCheck){
+                                //check again to see if the key is held
+                                holdingCheck = holding();
+                             }
+                             break;
+
+                         default:
+                             thirdNum = key;
+                             printf("Input stored in value 3!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             currentState = number4;
+                             break;
+                     }
+                     break;
+
+                 case number4:
+                     switch(key){
+                         case 10:
+                             printf("Invalid input! Try again\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         case 11:
+                             fourthNum = 0;
+                             printf("Input stored in value 4!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             isFourNumbersLong = TRUE;
+                             currentState = number1;
+                             break;
+
+                         case 12:
+                             if(isFourNumbersLong == TRUE)
+                                 printf("Your code is: %d%d%d%d\n", firstNum, secondNum, thirdNum, fourthNum);
+
+                             else{
+                                 printf("Invalid input! Try again\n");
+                                 }
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             break;
+
+                         default:
+                             fourthNum = key;
+                             printf("Input stored in value 4!\n");
+                             //check to see if the key is still pressed
+                             holdingCheck = holding();
+                             //pause the function while the key is held
+                             while(holdingCheck){
+                                 //check again to see if the key is held
+                                 holdingCheck = holding();
+                             }
+                             isFourNumbersLong = TRUE;
+                             currentState = number1;
+                             break;
+                     }
+                     break;
              }
+          }
      }
 }
 
