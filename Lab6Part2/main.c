@@ -43,7 +43,7 @@ void main(void){
                      break;
                  //if zero was pressed
                  case 11:
-                     //set the first number to zero
+                     //zero is stored in the array
                      inputs[i] = 0;
                      printf("Input stored [0]\n");
                      //check to see if the key is still pressed
@@ -75,7 +75,7 @@ void main(void){
                      break;
                  //if 1-9 was pressed
                  default:
-                     //the first number is set to the key pressed
+                     //the the number that was pressed is stored in the array
                      inputs[i] = key;
                      printf("Input stored [%d]\n", inputs[i]);
                      //check to see if the key is still pressed
@@ -85,6 +85,7 @@ void main(void){
                          //check again to see if the key is held
                          holdingCheck = holding();
                      }
+                     //move to the next array value
                      i++;
                      break;
              }
