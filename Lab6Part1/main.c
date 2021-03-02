@@ -176,18 +176,18 @@ int Keypad_Read(){
     if(row == 4)
         return 0;
 
-    if (col == 0x60 & (row == 0)) return row * 4 + 1;
-    else if (col == 0x50 & (row == 0)) return row * 4 + 2;
-    else if (col == 0x30 & (row == 0)) return row * 4 + 3;
-    else if (col == 0x60 & (row == 1)) return row * 4;
-    else if (col == 0x50 & (row == 1)) return row * 4 + 1;
-    else if (col == 0x30 & (row == 1)) return row * 4 + 2;
-    else if (col == 0x60 & (row == 2)) return row * 4 - 1;
-    else if (col == 0x50 & (row == 2)) return row * 4;
-    else if (col == 0x30 & (row == 2)) return row * 4 + 1;
-    else if (col == 0x60 & (row == 3)) return row * 4 - 2;
-    else if (col == 0x50 & (row == 3)) return row * 4 - 1;
-    else if (col == 0x30 & (row == 3)) return row * 4;
+    if (col == 0x60 & (row == 0)) return 1;
+    else if (col == 0x50 & (row == 0)) return 2;
+    else if (col == 0x30 & (row == 0)) return 3;
+    else if (col == 0x60 & (row == 1)) return 4;
+    else if (col == 0x50 & (row == 1)) return 5;
+    else if (col == 0x30 & (row == 1)) return 6;
+    else if (col == 0x60 & (row == 2)) return 7;
+    else if (col == 0x50 & (row == 2)) return 8;
+    else if (col == 0x30 & (row == 2)) return 9;
+    else if (col == 0x60 & (row == 3)) return 10;
+    else if (col == 0x50 & (row == 3)) return 11;
+    else if (col == 0x30 & (row == 3)) return 12;
     return 0;
 }
 
