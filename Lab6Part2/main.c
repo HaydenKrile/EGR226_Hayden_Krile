@@ -70,7 +70,7 @@ void main(void){
                  case 12:
                      //if the pound was pressed after four numbers were entered
                      if(i > 3){
-                         printf("Your code is: [%d][%d][%d][%d]\n", inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                         printf("Your code is: [%d][%d][%d][%d]\nEnter another 4-digit combination\n", inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
                          i = 0;
                      }
                      //if the pound was pressed before four numbers were entered
@@ -167,11 +167,15 @@ void SysTick_delay(uint16_t delay){
 
 
 /*-----------------------------------------------------------
-* Function: Keypad_Init
+* Function: Keypad_Read
 * Description: This function is used to detect which key
 *                   was pressed and interpret which
-*                   number to return. Code was lifted from
-*                   MSP432 textbook.
+*                   number to return.
+*
+* Citation:    This Code was lifted from the
+*              "TI MSP432 ARM Programming for
+*              Embedded Systems" Textbook
+*
 * Inputs:
 *              N/A
 *

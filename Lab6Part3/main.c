@@ -75,10 +75,10 @@ void main(void){
                         if(i > 3){
                             //if the inputed code matches the master code
                             if((master[j-4] == inputs[i-4]) & (master[j-3] == inputs[i-3]) & (master[j-2] == inputs[i-2]) & (master[j-1] == inputs[i-1]))
-                                printf("Your codes match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                                printf("Your codes match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\nEnter another 4-digit combination\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
                             //if the codes do not match
                             else
-                                printf("Your codes do not match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                                printf("Your codes do not match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\nEnter another 4-digit combination\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
                             i = 0;
                             j = 0;
                             isInput = 0;
@@ -245,11 +245,15 @@ void SysTick_delay(uint16_t delay){
 
 
 /*-----------------------------------------------------------
-* Function: Keypad_Init
+* Function: Keypad_Read
 * Description: This function is used to detect which key
 *                   was pressed and interpret which
-*                   number to return. Code was lifted from
-*                   MSP432 textbook.
+*                   number to return.
+*
+* Citation:    This Code was lifted from the
+*              "TI MSP432 ARM Programming for
+*              Embedded Systems" Textbook
+*
 * Inputs:
 *              N/A
 *
