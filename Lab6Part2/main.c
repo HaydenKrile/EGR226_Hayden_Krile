@@ -128,6 +128,10 @@ void Keypad_Init(){
 * Function: SysTick_Init
 * Description: This function enables the SysTick timer for
 *                   use in accurate delays.
+*
+* Citation:
+*              Code was lifted from lecture notes
+*
 * Inputs:
 *              N/A
 *
@@ -150,6 +154,10 @@ void SysTick_Init(){
 * Description: This function takes in a milisecond value and uses
 *                   the SysTick timer to delay until the specified amount
 *                   of time has passed.
+*
+* Citation:
+*              Code was lifted from lecture notes
+*
 * Inputs:
 *              uint16_t delay
 *

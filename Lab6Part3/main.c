@@ -75,13 +75,17 @@ void main(void){
                         if(i > 3){
                             //if the inputed code matches the master code
                             if((master[j-4] == inputs[i-4]) & (master[j-3] == inputs[i-3]) & (master[j-2] == inputs[i-2]) & (master[j-1] == inputs[i-1]))
-                                printf("Your codes match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\nEnter another 4-digit combination\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                                printf("Your codes match!\n");
                             //if the codes do not match
                             else
-                                printf("Your codes do not match!\n[%d][%d][%d][%d]\n[%d][%d][%d][%d]\nEnter another 4-digit combination\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                                printf("Your codes do not match!\n");
+                            printf("[%d][%d][%d][%d]\n[%d][%d][%d][%d]\n", master[j-4], master[j-3], master[j-2], master[j-1], inputs[i-4], inputs[i-3], inputs[i-2], inputs[i-1]);
+                            //reset the variables
                             i = 0;
                             j = 0;
                             isInput = 0;
+                            //ask for another input
+                            printf("Enter another 4-digit combination\n");
                         }
                         //if the pound was pressed before four numbers were entered
                         else{
@@ -206,6 +210,10 @@ void Keypad_Init(){
 * Function: SysTick_Init
 * Description: This function enables the SysTick timer for
 *                   use in accurate delays.
+*
+* Citation:
+*              Code was lifted from lecture notes
+*
 * Inputs:
 *              N/A
 *
@@ -228,6 +236,10 @@ void SysTick_Init(){
 * Description: This function takes in a milisecond value and uses
 *                   the SysTick timer to delay until the specified amount
 *                   of time has passed.
+*
+* Citation:
+*              Code was lifted from lecture notes
+*
 * Inputs:
 *              uint16_t delay
 *
