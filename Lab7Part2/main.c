@@ -23,7 +23,24 @@ void main(void)
     char lastName[SIZE] = "KRILE";
     char className[SIZE] = "EGR";
     char classNum[SIZE] = "226-10";
-    commandWrite(0x86);
+    int i;
+    commandWrite(1);
+    commandWrite(0x82);
+    for(i = 0; i<strlen(firstName); i++){
+        dataWrite(firstName[i]);
+    }
+    commandWrite(0xC2);
+    for(i = 0; i<strlen(firstName); i++){
+        dataWrite(lastName[i]);
+    }
+    commandWrite(0x92);
+    for(i = 0; i<strlen(firstName); i++){
+        dataWrite(className[i]);
+    }
+    commandWrite(0xD2);
+    for(i = 0; i<strlen(firstName); i++){
+        dataWrite(classNum[i]);
+    }
 
     while(1);
 }
