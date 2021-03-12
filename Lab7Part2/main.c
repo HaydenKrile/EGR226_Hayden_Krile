@@ -24,21 +24,20 @@ void main(void)
     char className[SIZE] = "EGR";
     char classNum[SIZE] = "226-10";
     int i;
-    commandWrite(1);
-    commandWrite(0x82);
+    commandWrite(0x85);
     for(i = 0; i<strlen(firstName); i++){
         dataWrite(firstName[i]);
     }
-    commandWrite(0xC2);
-    for(i = 0; i<strlen(firstName); i++){
+    commandWrite(0xC5);
+    for(i = 0; i<strlen(lastName); i++){
         dataWrite(lastName[i]);
     }
-    commandWrite(0x92);
-    for(i = 0; i<strlen(firstName); i++){
+    commandWrite(0x95);
+    for(i = 0; i<strlen(className); i++){
         dataWrite(className[i]);
     }
-    commandWrite(0xD2);
-    for(i = 0; i<strlen(firstName); i++){
+    commandWrite(0xD5);
+    for(i = 0; i<strlen(classNum); i++){
         dataWrite(classNum[i]);
     }
 

@@ -112,13 +112,13 @@ void pushNibble(uint8_t nibble){
     //clear P4.4-P4.7
     P4->OUT &= ~(0xF0);
     //Port pins P4.4 - P4.7 wired to D4 - D7
-    P4->OUT |= ((nibble << 4) & 0xF0);
+    P4->OUT |= ((nibble << 4));
     PulseEnablePin();
 }
 
 void pushByte(uint8_t byte){
-    pushNibble(byte<<4);
-    pushNibble(byte & 0xF0);
+    pushNibble(byte>>4);
+    pushNibble(byte & 0x0F);
 }
 
 void commandWrite(uint8_t command){
