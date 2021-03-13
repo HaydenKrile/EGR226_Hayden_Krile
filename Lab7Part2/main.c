@@ -1,8 +1,6 @@
 #include "msp.h"
 #include "LCD_lib.h"
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #define SIZE 50
 
 /**************************************************************************************
