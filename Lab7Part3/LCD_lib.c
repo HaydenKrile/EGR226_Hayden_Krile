@@ -4,7 +4,7 @@
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
 * Date:        03/10/2021
-* File:        LCD_lib.h
+* File:        LCD_lib.c
 * Description: This library contains all the functions needed for starting and
 *                   interacting to the LCD when connected to the MSP432
 ***************************************************************************************/
@@ -191,7 +191,7 @@ void pushByte(uint8_t byte){
 *              N/A
 *---------------------------------------------------------*/
 void commandWrite(uint8_t command){
-    //drive P4.1 Low
+    //drive P4.0 Low
     P4->OUT &= ~BIT0;
     delay_micro(50);
     //send the command
@@ -213,7 +213,7 @@ void commandWrite(uint8_t command){
 *              N/A
 *---------------------------------------------------------*/
 void dataWrite(uint8_t data){
-    //drive P4.1 High
+    //drive P4.0 High
     P4->OUT |= BIT0;
     delay_micro(50);
     //send the data

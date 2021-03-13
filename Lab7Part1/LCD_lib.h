@@ -1,9 +1,11 @@
-/*
- * LCD_lib.h
- *
- *  Created on: Mar 5, 2021
- *      Author: hkril
-*/
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/10/2021
+* File:        LCD_lib.h
+* Description: This library contains all the functions headers needed for starting and
+*                   interacting to the LCD when connected to the MSP432
+***************************************************************************************/
 
 #ifndef LCD_LIB_H_
 #define LCD_LIB_H_
