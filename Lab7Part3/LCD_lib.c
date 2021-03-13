@@ -1,11 +1,13 @@
 #include "msp.h"
 #include "LCD_lib.h"
-/*
- * LCD_lib.c
- *
- *  Created on: Mar 5, 2021
- *      Author: hkril
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/10/2021
+* File:        LCD_lib.h
+* Description: This library contains all the functions needed for starting and
+*                   interacting to the LCD when connected to the MSP432
+***************************************************************************************/
 
 /*-----------------------------------------------------------
 * Function: SysTick_Init
@@ -32,6 +34,20 @@ void SysTick_Init(){
     SysTick->CTRL = 0x00000005;
 }
 
+/*-----------------------------------------------------------
+* Function: LCD_Init
+* Description: This function enables and configures the LCD
+*                   so that the user can interact with it
+*
+* Citation:
+*              Code was gathered from lab pdf
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void LCD_Init(){
     P4->OUT &= ~BIT0;
 
@@ -65,7 +81,7 @@ void LCD_Init(){
 *              Code was gathered from lecture powerpoints
 *
 * Inputs:
-*              unsigned 32 bit integer
+*              unsigned 16 bit integer
 *
 * Outputs:
 *              N/A
@@ -101,6 +117,19 @@ void delay_ms(uint16_t ms){
     while((SysTick->CTRL & 0x00010000) == 0);
 }
 
+/*-----------------------------------------------------------
+* Function: PulseEnablePin
+* Description: This function turns on the enable pin in the LCD,
+*                   waits 50 microseconds
+* Citation:
+*              Code was gathered from lecture powerpoints
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PulseEnablePin(void){
     P4->OUT |= BIT2;
     delay_micro(50);
@@ -108,6 +137,19 @@ void PulseEnablePin(void){
     delay_micro(50);
 }
 
+/*-----------------------------------------------------------
+* Function: pushNibble
+* Description: This function collects the nibble given by the pushByte function
+*               and pulses the enable pin
+* Citation:
+*              Code was gathered from lecture powerpoints
+*
+* Inputs:
+*              uint8_t nibble
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void pushNibble(uint8_t nibble){
     //clear P4.4-P4.7
     P4->OUT &= ~(0xF0);
@@ -116,11 +158,38 @@ void pushNibble(uint8_t nibble){
     PulseEnablePin();
 }
 
+/*-----------------------------------------------------------
+* Function: pushByte
+* Description: This function breaks the Byte into two nibbles and sends
+*                   them to the pushNibble function
+* Citation:
+*              Code was gathered from lecture powerpoints
+*
+* Inputs:
+*              uint8_t byte
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void pushByte(uint8_t byte){
     pushNibble(byte>>4);
     pushNibble(byte & 0x0F);
 }
 
+/*-----------------------------------------------------------
+* Function: commandWrite
+* Description: This function sets the RW pin to low, to indicate
+*                   the command sent is a command, and sends the command
+*                   to the pushByte function
+* Citation:
+*              Code was gathered from lecture powerpoints
+*
+* Inputs:
+*              uint8_t command
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void commandWrite(uint8_t command){
     //drive P4.1 Low
     P4->OUT &= ~BIT0;
@@ -129,6 +198,20 @@ void commandWrite(uint8_t command){
     pushByte(command);
 }
 
+/*-----------------------------------------------------------
+* Function: dataWrite
+* Description: This function sets the RW pin to high, to indicate
+*                   the command sent is data, and sends the data to
+*                   the pushByte function
+* Citation:
+*              Code was gathered from lecture powerpoints
+*
+* Inputs:
+*              uint8_t command
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void dataWrite(uint8_t data){
     //drive P4.1 High
     P4->OUT |= BIT0;
