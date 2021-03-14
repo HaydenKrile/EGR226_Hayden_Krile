@@ -11,8 +11,23 @@ void main(void)
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
 
 	SysTick_Init();
+	double delayTimeOn, delayTimeOff, dutyCycle;
+	static double periodTime = 33.333;
+
+	//setup P2.4 as GPIO
+	P2->SEL0 &= ~BIT4;
+	P2->SEL1 &= ~BIT4;
+	P2->DIR |= BIT4;
 
 	while(1){
+
+	    delayTimeOn = dutyCycle * periodTime;
+	    delayTimeOff = periodTime - delayTimeOn;
+
+	    P2->OUT &= ~BIT4;
+	    delay_micro(delayTimeOff);
+	    P2->OUT |= BIT4;
+	    delay_micro(delayTimeOn);
 
 	}
 }
