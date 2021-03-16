@@ -3,9 +3,17 @@
 void SysTick_Init();
 void delay_micro(uint16_t microsecond);
 
-/**
- * main.c
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/15/2021
+* Project:     Lab8Part1
+* File:        main.c
+* Description: This program connects to the MSP432 and uses the
+*                   SysTick Timer to generate a PWM for the DC motor
+*                   The duty cycle of the motor can be controlled in the
+*                   debug menu with variable "dutyCycle"
+***************************************************************************************/
 void main(void)
 {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
