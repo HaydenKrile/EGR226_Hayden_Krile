@@ -20,7 +20,7 @@ void main(void)
 
 	SysTick_Init();
 	double delayTimeOn, delayTimeOff, dutyCycle;
-	static double periodTime = 33.333;
+	static double periodTime = 40;
 
 	//setup P2.4 as GPIO
 	P2->SEL0 &= ~BIT4;

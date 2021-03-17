@@ -24,9 +24,9 @@ void main(void)
     SysTick_Init();
     Keypad_Init();
 
-    double dutyCycle = 5;
+    double dutyCycle = .5;
     uint16_t periodTime;
-    int buttonPress;
+    double buttonPress;
 
     //setup P2.4 as GPIO
     P2->SEL0 |= BIT4;
@@ -49,7 +49,7 @@ void main(void)
             //if the button is 1-9
             if(buttonPress < 10)
                 //set the dutyCycle equal to the buttonPress
-                dutyCycle = buttonPress;
+                dutyCycle = (buttonPress/10);
 
             //if the button in 0
             if(buttonPress == 11)
