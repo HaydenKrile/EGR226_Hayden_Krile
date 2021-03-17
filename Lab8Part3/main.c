@@ -13,8 +13,8 @@ int Keypad_Read(void);
 * File:        main.c
 * Description: This program connects to the MSP432 and uses the
 *                   Timer A to generate a PWM for the DC motor
-*                   The duty cycle of the motor can be controlled in the
-*                   debug menu with variable "dutyCycle"
+*                   The duty cycle of the motor can be controlled with the
+*                   keypad
 ***************************************************************************************/
 void main(void)
 {

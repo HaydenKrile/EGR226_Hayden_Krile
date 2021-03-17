@@ -29,9 +29,11 @@ void main(void)
 
 	while(1){
 
+	    //set the delay time for being on and off
 	    delayTimeOn = dutyCycle * periodTime;
 	    delayTimeOff = periodTime - delayTimeOn;
 
+	    //toggle the motor based on the calculated values
 	    P2->OUT &= ~BIT4;
 	    delay_micro(delayTimeOff);
 	    P2->OUT |= BIT4;
