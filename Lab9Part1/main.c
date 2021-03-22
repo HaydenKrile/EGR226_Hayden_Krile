@@ -19,6 +19,16 @@ void main(void)
 	while(1);
 }
 
+/*-----------------------------------------------------------
+* Function: ButtonPinSetup
+* Description: This function sets up the pins for push buttons
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void ButtonPinSet(void){
     //set P3.5-7 as GPIO with internal pull-up resistor
     P3->SEL1 &= ~(BIT5|BIT6|BIT7);
@@ -50,6 +60,17 @@ void MotorPinSet(void){
     TIMER_A0->CTL = 0x0254;
 }
 
+/*-----------------------------------------------------------
+* Function: PORT3_IRQHandler
+* Description: This function handles the interrupts generated
+*                   from port three by the buttons
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PORT3_IRQHandler(void){
 
     //initially sets the duty cycle to 50%
