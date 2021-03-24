@@ -1,3 +1,14 @@
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/21/2021
+* Project:     Lab9Part2
+* File:        main.c
+* Description: This program connects to the MSP432 and uses SysTick Timer and interrupts
+*                   to increment the number displayed on a 7-segment LED from 0-9 back to 0
+*                   again every one second.
+***************************************************************************************/
+
 #include "msp.h"
 
 void SysTick_Init(void);
@@ -20,6 +31,18 @@ void main(void)
 	while(1);
 }
 
+/*-----------------------------------------------------------
+* Function: SysTick_Handler
+* Description: This function displayed the current number
+*               to the 7-segment LED and increments the value
+*               after one second passes from the SysTick Timer
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void SysTick_Handler(){
 
     //Clear out the last value in the pins

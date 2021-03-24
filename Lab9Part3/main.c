@@ -1,3 +1,15 @@
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/21/2021
+* Project:     Lab9Part3
+* File:        main.c
+* Description: This program connects to the MSP432 and uses two pushbuttons to control
+*                   the display of the 7-segment display. The red button increases the value
+*                   displayed by one, and the black button decreases that value by one. In each
+*                   case, when the value reaches 9 or 0, the display will loop back if increased or decreased
+*                   by one respectively.
+***************************************************************************************/
 #include "msp.h"
 
 void LEDPinSetup(void);
@@ -89,11 +101,14 @@ void PORT3_IRQHandler(void){
         P4->OUT &= ~0xFF;
         //display the number to the LED
         DisplayNum(num);
+        //delay to deal with debounce
+        __delay_cycles(500000);
         P3->IFG &= ~0x20;
     }
 
     //if the black button is pushed
     if (P3->IFG & 0x40){
+
         if (num>0)
             num--;
         else
@@ -103,6 +118,8 @@ void PORT3_IRQHandler(void){
         P4->OUT &= ~0xFF;
         //display the number to the LED
         DisplayNum(num);
+        //delay to deal with debounce
+        __delay_cycles(500000);
         P3->IFG &= ~0x40;
     }
 
