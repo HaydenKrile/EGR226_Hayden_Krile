@@ -14,9 +14,9 @@ void main(void)
 
 	//initialize SysTick
 	SysTick_Init();
+    ADCSetup();
 
 	while(1){
-        ADCSetup();
         //start conversion
         ADC14->CTL0 |= 1;
         //wait until conversion is complete
