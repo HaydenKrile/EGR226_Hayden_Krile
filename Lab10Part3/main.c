@@ -151,6 +151,7 @@ void ButtonPinSet(void){
 *---------------------------------------------------------*/
 void PORT3_IRQHandler(void){
 
+    delay_ms(100);
     if(P3->IFG & BIT2){
 
         if (mode == 0)
@@ -160,5 +161,5 @@ void PORT3_IRQHandler(void){
     }
 
     delay_ms(100);
-    P3->IFG = 0;
+    P3->IFG = 0;;
 }
