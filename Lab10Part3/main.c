@@ -10,10 +10,18 @@ void PORT3_IRQHandler(void);
 
 volatile int mode = 0;
 
-/**
- * main.c
- */
-
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/27/2021
+* Project:     Lab10Part3
+* File:        main.c
+* Description: This program connects to the MSP432 and uses the temp
+*               sensor and ADC to determine the voltage driven to the MSP432
+*               and displays this value to the LCD screen along with the converted
+*               temperature to degrees C. when the pushbutton is pressed, the value
+*               displays is changed to degrees F
+***************************************************************************************/
 void main(void){
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
 
@@ -34,6 +42,7 @@ void main(void){
 	ADCSetup();
 	ButtonPinSet();
 
+	//display the prompt to the screen
     commandWrite(0x80);
     for(i = 0; i<strlen(prompt); i++){
         dataWrite(prompt[i]);
@@ -49,8 +58,10 @@ void main(void){
 	    result = ADC14->MEM[5];
 	    temp = ((result * 0.02) -50);
 
+	    //start at the middle of the second line
 	    commandWrite(0xC5);
 
+	    //if in celcius mode
 	    if(mode == 0){
 	        //copies the temperature to a string so it can be printed to the LCD
 	        sprintf(currentTempString, "%.1f", temp);
@@ -63,6 +74,7 @@ void main(void){
             dataWrite('C');
 	    }
 
+	    //if in farenheight mode
 	    if(mode == 1){
 	        temp = ((1.8*temp)+32);
 	        //copies the temperature to a string so it can be printed to the LCD

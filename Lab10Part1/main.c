@@ -4,9 +4,16 @@
 
 void ADCSetup(void);
 
-/**
- * main.c
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/26/2021
+* Project:     Lab10Part1
+* File:        main.c
+* Description: This program connects to the MSP432 and uses the 10K
+*               pot and ADC to determine the voltage driven to the MSP432
+*               and displays this value to the console window
+***************************************************************************************/
 void main(void)
 {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
