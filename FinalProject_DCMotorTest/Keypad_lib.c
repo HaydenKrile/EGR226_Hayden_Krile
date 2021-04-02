@@ -23,9 +23,9 @@
 void Keypad_Init(){
     P7->DIR = 0;
     //enables pull-up resistors for column pins
-    P7->REN = 0xE0;
+    P7->REN = 0x70;
     //make column pins pull-up
-    P7->OUT = 0xE0;
+    P7->OUT = 0x70;
 }
 
 /*-----------------------------------------------------------
@@ -53,7 +53,7 @@ int Keypad_Read(){
     //drive all row pins low
     P7->OUT &= ~0x0F;
     //wait for signals to settle
-    SysTick_delay(10);
+    delay_ms(10);
     //read all column pins
     col = P7->IN & 0x70;
     //drive all rows high
@@ -74,7 +74,7 @@ int Keypad_Read(){
         //drive the active row low
         P7->OUT &= ~row_select[row];
         //wait for signal to settle
-        SysTick_delay(10);
+        delay_ms(10);
         //read all columns
         col = P7->IN & 0x70;
         //drive the active row high

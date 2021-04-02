@@ -2,10 +2,12 @@
 #include "Keypad_lib.h"
 
 void SysTick_Init();
-void SysTick_delay(uint16_t delay);
+void delay_ms(uint16_t delay);
 void EStopPinSet(void);
 void MotorPinSet(void);
 void PORT3_IRQHandler(void);
+
+volatile double dutyCycle = 0;
 
 /**
  * main.c
@@ -20,9 +22,9 @@ void main(void)
     //initialize SysTick and the keypad
     SysTick_Init();
     Keypad_Init();
+    EStopPinSet();
+    MotorPinSet();
 
-    //set duty cycle to zero to start
-    double dutyCycle = 0;
     double buttonPress, periodTime;
 
     //enable interrupts
@@ -91,7 +93,7 @@ void SysTick_Init(){
 * Outputs:
 *              N/A
 *---------------------------------------------------------*/
-void SysTick_delay(uint16_t delay){
+void delay_ms(uint16_t delay){
     //delay for 1 ms per delay value
     SysTick->LOAD = ((delay * 3000) - 1);
     //any write to CRV clears it
@@ -147,8 +149,8 @@ void MotorPinSet(void){
     //40000 cycles
     TIMER_A0->CCR[0] = 40000;
     TIMER_A0->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
-    //by default, sets the duty cycle to 50%
-    TIMER_A0->CCR[1] = 20000;
+    //by default, sets the duty cycle to 0%
+    TIMER_A0->CCR[1] = 0;
     TIMER_A0->CTL = 0x0254;
 }
 
@@ -165,5 +167,6 @@ void MotorPinSet(void){
 *              N/A
 *---------------------------------------------------------*/
 void PORT3_IRQHandler(void){
-    TIMER_A0->CCR[1] = 0;
+    dutyCycle = 0;
+    P3->IFG = 0;
 }
