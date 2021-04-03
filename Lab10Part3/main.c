@@ -163,7 +163,8 @@ void ButtonPinSet(void){
 *---------------------------------------------------------*/
 void PORT3_IRQHandler(void){
 
-    delay_ms(100);
+    //delay to deal with debounce
+    delay_ms(50);
     if(P3->IFG & BIT2){
 
         if (mode == 0)
@@ -172,6 +173,8 @@ void PORT3_IRQHandler(void){
             mode = 0;
     }
 
-    delay_ms(100);
+    //debounce delay
+    delay_ms(50);
+    //reset flag
     P3->IFG = 0;;
 }
