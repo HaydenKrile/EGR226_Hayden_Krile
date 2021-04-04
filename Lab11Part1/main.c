@@ -2,9 +2,15 @@
 
 void InfraredLEDInit(void);
 
-/**
- * main.c
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/27/2021
+* Project:     Lab11Part1
+* File:        main.c
+* Description: This program connects to the MSP432 and uses the Infrared
+*                   LED to test the LED to see if its emitting light.
+***************************************************************************************/
 void main(void)
 {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer

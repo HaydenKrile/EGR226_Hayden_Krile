@@ -6,6 +6,17 @@ void InfraredSensorInit(void);
 
 volatile int period;
 
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        03/27/2021
+* Project:     Lab11Part
+* File:        main.c
+* Description: This program connects to the MSP432 and uses the infrared
+*                   LED and sensor to detected when the LED is emitting light.
+*                   If the sensor detects the LED, the on-board red LED will light
+*                   up, and if no infrared light is detected, the red LED will turn off.
+***************************************************************************************/
 void main(void){
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
 
