@@ -13,6 +13,7 @@ void MotorMenuSelect(int);
 void PrintDoorMenu(void);
 void PrintMotorMenu(void);
 void PrintLightsMenu(void);
+int holding(void);
 
 enum menuOptions{
     mainMenu,
@@ -272,3 +273,4 @@ void PrintLightsMenu(){
         dataWrite(fourthLine[i]);
     }
 }
+

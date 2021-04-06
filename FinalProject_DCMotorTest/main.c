@@ -135,7 +135,7 @@ void delay_ms(uint16_t delay){
 * Description: This function sets up the pins for DC motor
 *
 * Inputs:
-*              N/A
+*              N/A.
 *
 * Outputs:
 *              N/A

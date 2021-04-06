@@ -24,13 +24,13 @@ void main(void)
 	    keypadStore = Keypad_Read();
 
 	    if(keypadStore == 1){
-	        TIMER_A0->CCR[2] = 2250;
+	        TIMER_A2->CCR[1] = 2250;
 	        P2->OUT &= ~BIT0;
 	        P2->OUT |= BIT1;
 	    }
 
 	    if(keypadStore == 2){
-            TIMER_A0->CCR[2] = 250;
+            TIMER_A2->CCR[1] = 250;
             P2->OUT |= BIT0;
             P2->OUT &= ~BIT1;
 	    }
@@ -48,17 +48,17 @@ void main(void)
 *              N/A
 *---------------------------------------------------------*/
 void ServoPinSet(void){
-    //setup P2.4 as GPIO
-    P2->SEL0 |= BIT5;
-    P2->SEL1 &= ~BIT5;
-    P2->DIR |= BIT5;
+    //setup P5.6 as GPIO
+    P5->SEL0 |= BIT6;
+    P5->SEL1 &= ~BIT6;
+    P5->DIR |= BIT6;
 
     //40000 cycles
-    TIMER_A0->CCR[0] = 40000;
-    TIMER_A0->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7;
+    TIMER_A2->CCR[0] = 40000;
+    TIMER_A2->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
     //by default, sets the duty cycle to 0%
-    TIMER_A0->CCR[2] = 250;
-    TIMER_A0->CTL = 0x0254;
+    TIMER_A2->CCR[1] = 250;
+    TIMER_A2->CTL = 0x0254;
 }
 
 void LEDPinSet(void){
