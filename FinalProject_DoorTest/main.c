@@ -2,7 +2,7 @@
 #include "Keypad_lib.h"
 
 void ServoPinSet(void);
-void LEDPinSet(void);
+void OnBoardLEDPinSet(void);
 void SysTick_Init(void);
 void delay_ms(uint16_t delay);
 
@@ -16,7 +16,7 @@ void main(void)
 	SysTick_Init();
 	Keypad_Init();
 	ServoPinSet();
-	LEDPinSet();
+	OnBoardLEDPinSet();
 
 	int keypadStore;
 
@@ -61,7 +61,7 @@ void ServoPinSet(void){
     TIMER_A2->CTL = 0x0254;
 }
 
-void LEDPinSet(void){
+void OnBoardLEDPinSet(void){
     //sets the LED's as outputs
     P2->DIR |= BIT0;
     P2->DIR |= BIT1;

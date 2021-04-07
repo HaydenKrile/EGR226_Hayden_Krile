@@ -11,17 +11,20 @@ void PrintLightsMenu(void);
 void PrintBrightnessMenu(void);
 void ChangeLEDBrightness(int);
 int holding(void);
+void LEDEStopPinSet(void);
+void LEDSelect(int);
 
 enum lightsOptions{
-    lightsMenu,
+    lightsMainMenu,
     redLight,
     greenLight,
     blueLight
 };
-enum lightsOptions currentLightState = lightsMenu;
+enum lightsOptions currentLightState = lightsMainMenu;
 
 int firstEnter = TRUE;
 volatile double redDutyCycle = 0, greenDutyCycle = 0, blueDutyCycle = 0;
+volatile double redPeriodTime, greenPeriodTime, bluePeriodTime;
 /**
  * main.c
  */
@@ -34,47 +37,15 @@ void main(void)
 	LCD_Init();
 	OffBoardLEDPinSet();
 	PrintLightsMenu();
+	LEDEStopPinSet();
 
-	int keyHold = 0, holdingCheck;
+	int keypadCollect = 0;
 
 	while(1){
 	    switch(currentLightState){
-	    case lightsMenu:
-            keyHold = Keypad_Read();
-            switch(keyHold){
-            case 1:
-                currentLightState = redLight;
-                //check to see if the key is still pressed
-                holdingCheck = holding();
-                //pause the function while the key is held
-                while(holdingCheck){
-                    //check again to see if the key is held
-                    holdingCheck = holding();
-                }
-                break;
-            case 2:
-                currentLightState = greenLight;
-                //check to see if the key is still pressed
-                holdingCheck = holding();
-                //pause the function while the key is held
-                while(holdingCheck){
-                    //check again to see if the key is held
-                    holdingCheck = holding();
-                }
-                break;
-            case 3:
-                currentLightState = blueLight;
-                //check to see if the key is still pressed
-                holdingCheck = holding();
-                //pause the function while the key is held
-                while(holdingCheck){
-                    //check again to see if the key is held
-                    holdingCheck = holding();
-                }
-                break;
-            default:
-                ;
-            }
+	    case lightsMainMenu:
+            keypadCollect = Keypad_Read();
+            LEDSelect(keypadCollect);
             break;
         case redLight:
             if(firstEnter){
@@ -129,7 +100,6 @@ void OffBoardLEDPinSet(void){
     TIMER_A0->CCR[3] = 0;
     TIMER_A0->CCR[4] = 0;
     TIMER_A0->CTL = 0x0254;
-
 }
 
 void PrintLightsMenu(){
@@ -207,7 +177,6 @@ void PrintBrightnessMenu(void){
 }
 
 void ChangeLEDBrightness(int i){
-    double redPeriodTime, greenPeriodTime, bluePeriodTime;
     double keypadRead = Keypad_Read();
     int holdingCheck;
 
@@ -247,7 +216,7 @@ void ChangeLEDBrightness(int i){
             commandWrite(1);
             delay_ms(10);
             PrintLightsMenu();
-            currentLightState = lightsMenu;
+            currentLightState = lightsMainMenu;
             firstEnter = TRUE;
         }
 
@@ -255,16 +224,16 @@ void ChangeLEDBrightness(int i){
         else if(keypadRead == 11){
             switch(i){
             case 2:
-                redDutyCycle = 0;
-                TIMER_A0->CCR[3] =redDutyCycle;
+                redPeriodTime = 0;
+                TIMER_A0->CCR[3] = redPeriodTime;
                 break;
             case 3:
-                greenDutyCycle = 0;
-                TIMER_A0->CCR[4] =greenDutyCycle;
+                greenPeriodTime = 0;
+                TIMER_A0->CCR[4] = greenPeriodTime;
                 break;
             case 4:
-                blueDutyCycle = 0;
-                TIMER_A0->CCR[2] = blueDutyCycle;
+                bluePeriodTime = 0;
+                TIMER_A0->CCR[2] = bluePeriodTime;
                 break;
             }
         }
@@ -306,4 +275,78 @@ int holding(){
     else
         //key is pressed
         return 1;
+}
+
+void LEDEStopPinSet(void){
+    //set P2.3 as GPIO with internal pull-up resistor
+    P2->SEL1 &= ~BIT3;
+    P2->SEL0 &= ~BIT3;
+    P2->DIR &= ~BIT3;
+    P2->REN |= BIT3;
+    P2->OUT |= BIT3;
+
+    //enabling interrupts for pins 2.3
+    P2->IES |= BIT3;
+    P2->IFG = 0;
+    P2->IE |= BIT3;
+
+    //enable interrupts
+    NVIC_SetPriority(PORT2_IRQn, 3);
+    NVIC_EnableIRQ(PORT2_IRQn);
+}
+
+void PORT2_IRQHandler(void){
+    static int isOn = TRUE;
+    delay_ms(75);
+    if(isOn){
+        TIMER_A0->CCR[2] = 0;
+        TIMER_A0->CCR[3] = 0;
+        TIMER_A0->CCR[4] = 0;
+        isOn = FALSE;
+    }
+
+    else{
+        TIMER_A0->CCR[3] = redPeriodTime;
+        TIMER_A0->CCR[4] = greenPeriodTime;
+        TIMER_A0->CCR[2] = bluePeriodTime;
+        isOn = TRUE;
+    }
+    delay_ms(75);
+    P2->IFG = 0;
+}
+
+void LEDSelect(int i){
+    int holdingCheck;
+    switch(i){
+    case 1:
+        currentLightState = redLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 2:
+        currentLightState = greenLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 3:
+        currentLightState = blueLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    }
 }

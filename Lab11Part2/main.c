@@ -4,12 +4,10 @@ void RedLEDInit(void);
 void InfraredLEDInit(void);
 void InfraredSensorInit(void);
 
-volatile int period;
-
 /**************************************************************************************
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
-* Date:        03/27/2021
+* Date:        04/05/2021
 * Project:     Lab11Part
 * File:        main.c
 * Description: This program connects to the MSP432 and uses the infrared
@@ -23,7 +21,7 @@ void main(void){
     RedLEDInit();
     InfraredLEDInit();
     InfraredSensorInit();
-    __enable_irq();
+    __enable_interrupt();
 
     while(1);
 }
@@ -89,6 +87,7 @@ void InfraredSensorInit(){
     NVIC_EnableIRQ(TA2_N_IRQn);
 }
 
+
 /*-----------------------------------------------------------
 * Function: TA2_N_IRQHandler
 * Description: This function controls the state of the red LED
@@ -101,25 +100,34 @@ void InfraredSensorInit(){
 * Outputs:
 *              N/A
 *---------------------------------------------------------*/
-void TA2_N_IRQHandler(){
-    static int previousTime = 0;
-    statis int currentTime = 0;
 
-    //sets the previous time to the current time
-    previousTime = currentTime;
-    //update the current time
-    currentTime = TIMER_A2->CCR[2];
-    //calculate the period by finding the difference between the current time and the previous time
-    period = currentTime - previousTime;
+void TA2_N_IRQHandler()
+{
+    static uint16_t previousTime = 0, currentTime = 0, period;
 
-    //if the infrared sensor is detected
-    if(period > 37450)
-        //turn on the  red LED
-        P1->OUT |= BIT0;
-    //if no infrared light is detected
-    else
-        //turn off red LED
-        P1->OUT &= ~BIT0;
+    //if capture is detected
+    if(TIMER_A2->CCTL[2] & BIT0){
+        //set the previous time to the time detected during the last interrupt
+        previousTime = currentTime;
+        //set the current time
+        currentTime = TIMER_A2->CCR[2];
+        //determine the period of the signal detected
+        period = currentTime - previousTime;
 
-    TIMER_A2->CCTL[2] &= ~2;
+        //if the infrared sensor detected light
+        if((period > 37495) & (period < 37505)){
+            //tunr on red light
+            P1->OUT |= BIT0;
+        }
+
+        //if no light is detected
+        else{
+            //turn off light
+            P1->OUT &= ~BIT0;
+        }
+    }
+
+    //reset flag
+    TIMER_A2->CCTL[2] &= ~3;
 }
+

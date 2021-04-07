@@ -5,7 +5,7 @@ void InfraredLEDInit(void);
 /**************************************************************************************
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
-* Date:        03/27/2021
+* Date:        04/02/2021
 * Project:     Lab11Part1
 * File:        main.c
 * Description: This program connects to the MSP432 and uses the Infrared
@@ -23,6 +23,7 @@ void main(void)
 /*-----------------------------------------------------------
 * Function: InfraredLEDPinSetup
 * Description: This function sets up the pins for the infrared LED
+*                   and Timer A for PWM
 *
 * Inputs:
 *              N/A
@@ -35,7 +36,6 @@ void InfraredLEDInit(void){
     P2->SEL0 |= BIT4;
     P2->SEL1 &= ~BIT4;
     P2->DIR |= BIT4;
-
 
     TIMER_A0->CCR[0] = 37500;
     TIMER_A0->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
