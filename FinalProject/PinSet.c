@@ -26,6 +26,7 @@ void MasterPinSet(){
     LEDEStopPinSet();
     DoorbellPinSet();
     BuzzerPinSet();
+    ADCSetup();
 }
 /*-----------------------------------------------------------
 * Function: ServoPinSet
@@ -149,6 +150,7 @@ void OnBoardLEDPinSet(void){
  /*-----------------------------------------------------------
  * Function: OffBoardLEDPinSet
  * Description: This function sets up the pins for the off board 3 LED
+ *                  and LCD LED
  *
  * Inputs:
  *              N/A
@@ -158,18 +160,20 @@ void OnBoardLEDPinSet(void){
  *---------------------------------------------------------*/
  void OffBoardLEDPinSet(void){
      //setup P2.5-7 as GPIO
-     P2->SEL0 |= (BIT5|BIT6|BIT7);
-     P2->SEL1 &= ~(BIT5|BIT6|BIT7);
-     P2->DIR |= (BIT5|BIT6|BIT7);
+     P2->SEL0 |= (BIT4|BIT5|BIT6|BIT7);
+     P2->SEL1 &= ~(BIT4|BIT5|BIT6|BIT7);
+     P2->DIR |= (BIT4|BIT5|BIT6|BIT7);
      //P2->REN |= BIT5;
 
 
      //10000 cycles
      TIMER_A0->CCR[0] = 10000;
+     TIMER_A0->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[3] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[4] = TIMER_A_CCTLN_OUTMOD_7;
      //by default, sets the duty cycle to 0%
+     TIMER_A0->CCR[2] = 0;
      TIMER_A0->CCR[2] = 0;
      TIMER_A0->CCR[3] = 0;
      TIMER_A0->CCR[4] = 0;
@@ -206,4 +210,36 @@ void OnBoardLEDPinSet(void){
      //500
      TIMER_A3->CCR[3] = 0;
      TIMER_A3->CTL = 0x0254;
+ }
+
+ /*-----------------------------------------------------------
+ * Function: ADCSetup
+ * Description: This function enables ADC converter to be
+ *               used with the 10k Pot
+ *
+ * Citation:
+ *              Code was gathered from lecture powerpoints
+ *
+ * Inputs:
+ *              N/A
+ *
+ * Outputs:
+ *              N/A
+ *---------------------------------------------------------*/
+ void ADCSetup(){
+     //power on and disable during setup stage
+     ADC14->CTL0 = 0x10;
+     //S/H pulse mode, MCLCK, 32 sample clocks, SW trigger, /4 clock divide
+     ADC14->CTL0 |= 0x04D80300;
+     //14-bit resolution
+     ADC14->CTL1 = 0x30;
+     //A0 input, single ended, vref=avcc
+     ADC14->MCTL[5] = 0;
+     //configure pin 5.5 for AO
+     P5->SEL1 |= 0x20;
+     P5->SEL0 |= 0x20;
+     //start converting at mem reg 5
+     ADC14->CTL1 |= 0x00050000;
+     //enable ADC after configuration
+     ADC14->CTL0 |= 2;
  }

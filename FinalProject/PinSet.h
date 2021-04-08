@@ -17,5 +17,6 @@ void OffBoardLEDPinSet(void);
 void LEDEStopPinSet(void);
 void DoorbellPinSet(void);
 void BuzzerPinSet(void);
+void ADCSetup(void);
 
 #endif /* PINSET_H_ */

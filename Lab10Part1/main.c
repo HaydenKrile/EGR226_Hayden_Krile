@@ -30,7 +30,7 @@ void main(void)
         while(!ADC14->IFGR0);
 	    //store value in variable result
         result = ADC14->MEM[5];
-        voltage = result * 0.0002;
+        voltage = result * 0.6101;
         //print result to console window
         printf("Value is: %.0f or %.2f V\n", result, voltage);
         //wait for next value

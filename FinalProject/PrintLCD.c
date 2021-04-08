@@ -44,15 +44,52 @@ void HomeMenu(){
 }
 
 void PrintDoorMenu(){
-    char firstLine[SIZE] = "  Open Door?";
-    char secondLine[SIZE] = "[1] Open";
-    char thirdLine[SIZE] = "[2] Close";
+    char firstLine[SIZE] = "[1] Open";
+    char secondLine[SIZE] = "[2] Close";
+    char thirdLine[SIZE] = "[3] Doorbell";
     char fourthLine[SIZE] = "[*] Home";
     int i;
 
     //clear the screen
     commandWrite(1);
-    delay_micro(150);
+    delay_ms(10);
+
+    //start the cursor on the first row
+    commandWrite(0x80);
+    //write the first string
+    for(i = 0; i<strlen(firstLine); i++){
+        dataWrite(firstLine[i]);
+    }
+    //move cursor to second row
+    commandWrite(0xC0);
+    //write the second string
+    for(i = 0; i<strlen(secondLine); i++){
+        dataWrite(secondLine[i]);
+    }
+    //move cursor to third row
+    commandWrite(0x90);
+    //write the third string
+    for(i = 0; i<strlen(thirdLine); i++){
+        dataWrite(thirdLine[i]);
+    }
+    //move cursor to fourth row
+    commandWrite(0xD0);
+    //write the fourth string
+    for(i = 0; i<strlen(fourthLine); i++){
+        dataWrite(fourthLine[i]);
+    }
+}
+
+void PrintDoorbellMenu(){
+    char firstLine[SIZE] = "[1] Ding Dong";
+    char secondLine[SIZE] = "[2] Buzzer";
+    char thirdLine[SIZE] = "[3] My Doorbell";
+    char fourthLine[SIZE] = "[*] Back";
+    int i;
+
+    //clear the screen
+    commandWrite(1);
+    delay_ms(10);
 
     //start the cursor on the first row
     commandWrite(0x80);

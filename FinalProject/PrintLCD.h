@@ -10,6 +10,7 @@
 
 void HomeMenu(void);
 void PrintDoorMenu(void);
+void PrintDoorbellMenu(void);
 void PrintMotorMenu(void);
 void PrintLightsMenu(void);
 void PrintBrightnessMenu(void);
