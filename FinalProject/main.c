@@ -16,7 +16,7 @@ void MotorMenuSelect(double);
 void DoorbellSelect (int);
 int holding(void);
 void LEDSelect(int);
-void ChangeLEDBrightness(int);
+void ChangeLEDBrightness(int, double);
 void AdjustLCDLED(void);
 
 enum menuOptions{
@@ -76,24 +76,21 @@ void main(void)
     //enable interrupts
 	__enable_irq();
 	while(1){
+
+	    //set the LCD LED
 	    AdjustLCDLED();
-	    //if on the main menu, wait for an input from the user
-	    if(currentMenu == mainMenu){
-            //read the keypad
-            keypadCollect = Keypad_Read();
-            //determine which state to be in based on the keypad input
-            MainMenuSelect(keypadCollect);
-	    }
+	    //read the keypad
+        keypadCollect = Keypad_Read();
 
 	    switch(currentMenu){
+	    case mainMenu:
+	        MainMenuSelect(keypadCollect);
+	        break;
 	    case doorMenu:
-	        //read the keypad
-	        keypadCollect = Keypad_Read();
             if(firstEnter){
                 PrintDoorMenu();
                 firstEnter = FALSE;
             }
-
             switch(currentDoorState){
             case doorMainMenu:
                 DoorMenuSelect(keypadCollect);
@@ -106,16 +103,12 @@ void main(void)
                 DoorbellSelect(keypadCollect);
                 break;
             }
-
 	        break;
 	    case motorMenu:
 	        if(firstEnter){
                 PrintMotorMenu();
                 firstEnter = FALSE;
 	        }
-            //read the keypad
-            keypadCollect = Keypad_Read();
-            //determine which state to be in based on the keypad input
             MotorMenuSelect(keypadCollect);
 	        break;
 	    case lightsMenu:
@@ -125,7 +118,6 @@ void main(void)
             }
             switch(currentLightState){
             case lightsMainMenu:
-                keypadCollect = Keypad_Read();
                 LEDSelect(keypadCollect);
                 break;
             case redLight:
@@ -133,26 +125,24 @@ void main(void)
                     PrintBrightnessMenu();
                     firstEnterLED = FALSE;
                 }
-                ChangeLEDBrightness(2);
+                ChangeLEDBrightness(2, keypadCollect);
                 break;
             case greenLight:
                 if(firstEnterLED){
                     PrintBrightnessMenu();
                     firstEnterLED = FALSE;
                 }
-                ChangeLEDBrightness(3);
+                ChangeLEDBrightness(3, keypadCollect);
                 break;
             case blueLight:
                 if(firstEnterLED){
                     PrintBrightnessMenu();
                     firstEnterLED = FALSE;
                 }
-                ChangeLEDBrightness(4);
+                ChangeLEDBrightness(4, keypadCollect);
                 break;
             }
 	        break;
-	    default:
-	        ;
 	    }
 	}
 }
@@ -343,8 +333,8 @@ void DoorbellSelect(int i){
     }
 }
 
-void ChangeLEDBrightness(int i){
-    double keypadRead = Keypad_Read();
+void ChangeLEDBrightness(int i, double keypadRead){
+    //double keypadRead = Keypad_Read();
     int holdingCheck;
 
     //if a button is pressed:
