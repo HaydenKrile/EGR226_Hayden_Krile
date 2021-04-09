@@ -194,7 +194,7 @@ void OnBoardLEDPinSet(void){
      P5->IE |= BIT0;
 
      //enable interrupts
-     NVIC_SetPriority(PORT5_IRQn, 3);
+     NVIC_SetPriority(PORT5_IRQn, 4);
      NVIC_EnableIRQ(PORT5_IRQn);
  }
 

@@ -4,7 +4,6 @@
 #include "PrintLCD.h"
 #include "PinSet.h"
 #include "DoorbellTones.h"
-#include "Menu.h"
 #include <string.h>
 #define SIZE 25
 #define TRUE 1
@@ -14,6 +13,11 @@ void DoorbellSelect (int);
 void LEDSelect(int);
 void ChangeLEDBrightness(int);
 void AdjustLCDLED(void);
+void MainMenuSelect(int);
+void DoorMenuSelect(int);
+void LightsMenuSelect(int);
+void MotorMenuSelect(double);
+int holding(void);
 
 enum menuOptions{
     mainMenu,
@@ -44,7 +48,7 @@ enum doorbellOptions{
 };
 enum doorbellOptions currentDoorbell = dingDong;
 
-int firstEnter = TRUE, firstEnterLED = TRUE, firstEnterDoorbell = TRUE;
+int firstEnter = TRUE, firstEnterLED = TRUE, firstEnterDoorbell = TRUE, doorbellRing = FALSE, doorOpen = FALSE;
 volatile double motorDutyCycle = 0;
 volatile double redDutyCycle = 0, greenDutyCycle = 0, blueDutyCycle = 0;
 volatile double redPeriodTime, greenPeriodTime, bluePeriodTime;
@@ -153,10 +157,7 @@ void main(void)
 	}
 }
 
-
-
 void DoorbellSelect(int i){
-
     int holdingCheck;
     switch (i){
     case 1:
@@ -288,7 +289,198 @@ void ChangeLEDBrightness(int i){
     }
 }
 
+void MainMenuSelect(int i){
+    int holdingCheck;
+    switch(i){
+    case 1:
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        currentMenu = doorMenu;
+        break;
+    case 2:
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        currentMenu = motorMenu;
+        break;
+    case 3:
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        currentMenu = lightsMenu;
+        break;
+    default:
+        ;
+    }
+}
 
+void DoorMenuSelect(int i){
+    int holdingCheck;
+    switch(i){
+    case 1:
+        TIMER_A2->CCR[1] = 2250;
+        P2->OUT &= ~BIT0;
+        P2->OUT |= BIT1;
+        doorOpen = TRUE;
+        if(doorbellRing){
+            PrintDoorIsOpen();
+            delay_ms(2000);
+            PrintDoorMenu();
+            doorbellRing = FALSE;
+        }
+        break;
+    case 2:
+        TIMER_A2->CCR[1] = 250;
+        P2->OUT |= BIT0;
+        P2->OUT &= ~BIT1;
+        doorOpen = FALSE;
+        if(doorbellRing){
+            PrintDoorIsClosed();
+            delay_ms(2000);
+            PrintDoorMenu();
+            doorbellRing = FALSE;
+        }
+        break;
+    case 3:
+        currentDoorState = doorbellMenu;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 10:
+        commandWrite(1);
+        delay_ms(10);
+        HomeMenu();
+        firstEnter = TRUE;
+        currentMenu = mainMenu;
+        break;
+    }
+
+    if(doorbellRing & doorOpen){
+        PrintDoorIsOpen();
+        delay_ms(2000);
+        PrintDoorMenu();
+        doorbellRing = FALSE;
+    }
+}
+
+void MotorMenuSelect(double i){
+    double periodTime;
+    if(i){
+        if(i < 10){
+            motorDutyCycle = (i/10);
+        }
+        else if(i == 10){
+            commandWrite(1);
+            delay_ms(10);
+            HomeMenu();
+            firstEnter = TRUE;
+            currentMenu = mainMenu;
+        }
+        else if(i == 11){
+            motorDutyCycle = 0;
+        }
+        periodTime = (motorDutyCycle * 40000);
+        TIMER_A2->CCR[2] = periodTime;
+    }
+}
+
+void LEDSelect(int i){
+    int holdingCheck;
+    switch(i){
+    case 1:
+        currentLightState = redLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 2:
+        currentLightState = greenLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 3:
+        currentLightState = blueLight;
+        //check to see if the key is still pressed
+        holdingCheck = holding();
+        //pause the function while the key is held
+        while(holdingCheck){
+            //check again to see if the key is held
+            holdingCheck = holding();
+        }
+        break;
+    case 10:
+        commandWrite(1);
+        delay_ms(10);
+        HomeMenu();
+        firstEnterLED = TRUE;
+        firstEnter = TRUE;
+        currentMenu = mainMenu;
+        break;
+    }
+}
+
+/*-----------------------------------------------------------
+* Function: holding
+* Description: This function is used to detect when a key is
+*                   being pressed and returns 0 if no key was pressed
+*                   and 1 if a key was detected to be pressed.
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              0 or 1
+*---------------------------------------------------------*/
+int holding(){
+    int col;
+
+    //all row pins set to output
+    P7->DIR |= 0x0F;
+    //drive all row pins low
+    P7->OUT &= ~0x0F;
+    //wait for signals to settle
+    delay_ms(10);
+    //read all column pins
+    col = P7->IN & 0x70;
+    //drive all rows high
+    P7->OUT |= 0x0F;
+    //disable all row pins
+    P7->DIR &= ~0x0F;
+    //if all columns are high
+    if(col == 0x70)
+        //no key pressed
+        return 0;
+    //if a column is low
+    else
+        //key is pressed
+        return 1;
+}
 
 void AdjustLCDLED(void){
     float result, voltage;
@@ -393,6 +585,7 @@ void PORT5_IRQHandler(void){
     currentDoorState = doorMainMenu;
     firstEnterLED = TRUE;
     firstEnterDoorbell = TRUE;
+    doorbellRing = TRUE;
     //reset flag
     P5->IFG = 0;
 }

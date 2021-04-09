@@ -242,5 +242,50 @@ void PrintDoorbell(void){
     for(i = 0; i<strlen(firstLine); i++){
         dataWrite(firstLine[i]);
     }
+}
 
+void PrintDoorIsOpen(){
+        char firstLine[SIZE] = "Door is open!";
+        char secondLine[SIZE] = "Come on in!";
+        int i;
+
+        //clear the screen
+        commandWrite(1);
+        delay_ms(10);
+
+        //start the cursor on the first row
+        commandWrite(0x80);
+        //write the first string
+        for(i = 0; i<strlen(firstLine); i++){
+            dataWrite(firstLine[i]);
+        }
+        //move cursor to second row
+        commandWrite(0xC0);
+        //write the second string
+        for(i = 0; i<strlen(secondLine); i++){
+            dataWrite(secondLine[i]);
+        }
+}
+
+void PrintDoorIsClosed(){
+    char firstLine[SIZE] = "No one's here!";
+    char secondLine[SIZE] = "Go away!";
+    int i;
+
+    //clear the screen
+    commandWrite(1);
+    delay_ms(10);
+
+    //start the cursor on the first row
+    commandWrite(0x80);
+    //write the first string
+    for(i = 0; i<strlen(firstLine); i++){
+        dataWrite(firstLine[i]);
+    }
+    //move cursor to second row
+    commandWrite(0xC0);
+    //write the second string
+    for(i = 0; i<strlen(secondLine); i++){
+        dataWrite(secondLine[i]);
+    }
 }
