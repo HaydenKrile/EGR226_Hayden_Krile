@@ -4,6 +4,7 @@
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
 * Date:        04/01/2021
+* Project:     FinalProject
 * File:        Keypad_lib.c
 * Description: This library contains all the functions needed for
 *                   interacting with the keypad when connected to the MSP432

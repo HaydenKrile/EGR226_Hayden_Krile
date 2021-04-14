@@ -3,13 +3,27 @@
 #include "LCD_lib.h"
 #include <string.h>
 #define SIZE 20
-/*
- * PrintLCD.c
- *
- *  Created on: Apr 6, 2021
- *      Author: Hayden
- */
 
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        04/06/2021
+* Project:     FinalProject
+* File:        PrintLCD.c
+* Description: This library contains the commands used to print the
+*                   menu options to the LCD screen
+***************************************************************************************/
+
+/*-----------------------------------------------------------
+* Function: HomeMenu
+* Description: This function prints out the home menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void HomeMenu(){
         char firstLine[SIZE] = "Select a Menu:";
         char secondLine[SIZE] = "[1] Door Menu";
@@ -43,6 +57,16 @@ void HomeMenu(){
         }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintDoorMenu
+* Description: This function prints out the door menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintDoorMenu(){
     char firstLine[SIZE] = "[1] Open";
     char secondLine[SIZE] = "[2] Close";
@@ -80,6 +104,16 @@ void PrintDoorMenu(){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintDoorbellMenu
+* Description: This function prints out the doorbell menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintDoorbellMenu(){
     char firstLine[SIZE] = "[1] Ding Dong";
     char secondLine[SIZE] = "[2] Buzzer";
@@ -117,6 +151,16 @@ void PrintDoorbellMenu(){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintMotorMenu
+* Description: This function prints out the motor menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintMotorMenu(){
     char firstLine[SIZE] = "  Use Keypad to";
     char secondLine[SIZE] = "Select Motor";
@@ -154,6 +198,16 @@ void PrintMotorMenu(){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintLightsMenu
+* Description: This function prints out the lights menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintLightsMenu(){
     char firstLine[SIZE] = "[1] Red";
     char secondLine[SIZE] = "[2] Green";
@@ -191,6 +245,16 @@ void PrintLightsMenu(){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintBrightnessMenu
+* Description: This function prints out the LED brightness menu to the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintBrightnessMenu(void){
     char firstLine[SIZE] = "Use Keypad to";
     char secondLine[SIZE] = "Select LED";
@@ -228,6 +292,16 @@ void PrintBrightnessMenu(void){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintDoorbell
+* Description: This function prints out "Doorbell rang!" when the touch sensor is pressed
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintDoorbell(void){
     char firstLine[SIZE] = "Doorbell rang!";
     int i;
@@ -244,6 +318,18 @@ void PrintDoorbell(void){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintDoorIsOpen
+* Description: This function prints out "Door's open! Come on in!"
+                when the door is either open when the doorbell is rung
+                or when the door is opened after the doorbell is rung
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintDoorIsOpen(){
         char firstLine[SIZE] = "Door is open!";
         char secondLine[SIZE] = "Come on in!";
@@ -267,6 +353,17 @@ void PrintDoorIsOpen(){
         }
 }
 
+/*-----------------------------------------------------------
+* Function: PrintDoorbell
+* Description: This function prints out "No one's here! Go Away!"
+                when access is denied after the doorbell is rung
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void PrintDoorIsClosed(){
     char firstLine[SIZE] = "No one's here!";
     char secondLine[SIZE] = "Go away!";

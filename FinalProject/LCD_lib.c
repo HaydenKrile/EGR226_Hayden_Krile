@@ -4,6 +4,7 @@
 * Author:      Hayden Krile
 * Course:      EGR 226 - 905
 * Date:        03/10/2021
+* Project:     FinalProject
 * File:        LCD_lib.c
 * Description: This library contains all the functions needed for starting and
 *                   interacting to the LCD when connected to the MSP432

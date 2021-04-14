@@ -1,12 +1,15 @@
 #include "msp.h"
 #include "PinSet.h"
-/*
- * PinSet.c
- *
- *  Created on: Apr 6, 2021
- *      Author: Hayden
- */
-
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        04/06/2021
+* Project:     FinalProject
+* File:        PinSet.c
+* Description: This library contains the commands used to initiate all
+*               pins and Timer_A commands used to control all modules used
+*               in the Final Project
+***************************************************************************************/
 /*-----------------------------------------------------------
 * Function: MasterPinSet
 * Description: This function sets up the pins for all modules
@@ -28,6 +31,7 @@ void MasterPinSet(){
     BuzzerPinSet();
     ADCSetup();
 }
+
 /*-----------------------------------------------------------
 * Function: ServoPinSet
 * Description: This function sets up the pins for the servo motor
@@ -180,6 +184,16 @@ void OnBoardLEDPinSet(void){
      TIMER_A0->CTL = 0x0254;
  }
 
+ /*-----------------------------------------------------------
+ * Function: DoorbellPinSet
+ * Description: This function sets up the pins for the touch sensor
+ *
+ * Inputs:
+ *              N/A
+ *
+ * Outputs:
+ *              N/A
+ *---------------------------------------------------------*/
  void DoorbellPinSet(void){
      //set P3.7 as GPIO with internal pull-up resistor
      P5->SEL1 &= ~BIT0;
@@ -198,7 +212,17 @@ void OnBoardLEDPinSet(void){
      NVIC_EnableIRQ(PORT5_IRQn);
  }
 
- void BuzzerPinSet(void){
+/*-----------------------------------------------------------
+ * Function: DoorbellPinSet
+ * Description: This function sets up the pins for the doorbell speaker
+ *
+ * Inputs:
+ *              N/A
+ *
+ * Outputs:
+ *              N/A
+ *---------------------------------------------------------*/
+void BuzzerPinSet(void){
      //setup P2.4 as GPIO
      P9->SEL0 |= BIT2;
      P9->SEL1 &= ~BIT2;

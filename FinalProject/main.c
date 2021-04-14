@@ -53,9 +53,14 @@ volatile double motorDutyCycle = 0;
 volatile double redDutyCycle = 0, greenDutyCycle = 0, blueDutyCycle = 0;
 volatile double redPeriodTime, greenPeriodTime, bluePeriodTime;
 
-/**
- * main.c
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        04/09/2021
+* Project:     FinalProject
+* File:        main.c
+* Description: This program connects to the MSP432 and uses
+***************************************************************************************/
 void main(void)
 {
 	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
@@ -327,18 +332,43 @@ void MainMenuSelect(int i){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: DoorMenuSelect
+* Description: This function accepts as an input, and integer that
+*               was collected from the keypad to determine how to interact with the door.
+*               if 1 is pressed, the door will open and the green LED will turn on.
+*               if 2 is pressed, the door will close and the red LED will turn on.
+*               if three is pressed, the doorbell menu is opened up.
+*               if 10 is pressed, the menu is closed and the program
+*               returns to the main menu.
+*
+* Inputs:
+*              int i
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void DoorMenuSelect(int i){
     int holdingCheck;
     switch(i){
     case 1:
+        //set the servo to the open position
         TIMER_A2->CCR[1] = 2250;
+        //turn off the red LED
         P2->OUT &= ~BIT0;
+        //turn on the green LED
         P2->OUT |= BIT1;
+        //set the doorOpen variable to true
         doorOpen = TRUE;
+        //if the doorbell was rung
         if(doorbellRing){
+            //print that the door is open
             PrintDoorIsOpen();
+            //delay to allow the user to read what is on the screen
             delay_ms(2000);
+            //re-print the door menu
             PrintDoorMenu();
+            //the person is no longer at the door
             doorbellRing = FALSE;
         }
         break;
@@ -381,6 +411,18 @@ void DoorMenuSelect(int i){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: LEDSelect
+* Description: This function accepts as an input, and integer that
+*               was collected from the keypad to determine which LED
+*               state to set the currentLightState to
+*
+* Inputs:
+*              int i
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void MotorMenuSelect(double i){
     double periodTime;
     if(i){
@@ -402,6 +444,18 @@ void MotorMenuSelect(double i){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: LEDSelect
+* Description: This function accepts as an input, and integer that
+*               was collected from the keypad to determine which LED
+*               state to set the currentLightState to
+*
+* Inputs:
+*              int i
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void LEDSelect(int i){
     int holdingCheck;
     switch(i){
@@ -482,6 +536,18 @@ int holding(){
         return 1;
 }
 
+/*-----------------------------------------------------------
+* Function: AdjustLCDLED
+* Description: This function checks the voltage recorded from the 10K
+*               pot and converts this reading into a PWM signal that controls the
+*               brightness of the LCD screen
+*
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void AdjustLCDLED(void){
     float result, voltage;
     //start conversion
@@ -490,7 +556,9 @@ void AdjustLCDLED(void){
     while(!ADC14->IFGR0);
     //store value in variable result
     result = ADC14->MEM[5];
+    //converts the value so its between 0 - 10,000
     voltage = result * 0.6101;
+    //sets this value as a PWM signal for the LCD LED
     TIMER_A0->CCR[1] = voltage;
 }
 

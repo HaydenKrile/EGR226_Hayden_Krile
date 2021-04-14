@@ -2,15 +2,30 @@
 #include "DoorbellTones.h"
 #include "LCD_lib.h"
 
-/*
- * DoorbellTones.c
- *
- *  Created on: Apr 8, 2021
- *      Author: Hayden
- */
+/**************************************************************************************
+* Author:      Hayden Krile
+* Course:      EGR 226 - 905
+* Date:        04/08/2021
+* Project:     FinalProject
+* File:        DoorbellTones.c
+* Description: This library contains the commands used to
+*                   control the tones created by the speaker from
+*                   the MSP432 by using a PWM signal on pin 9.2
+***************************************************************************************/
 
-
-
+/*-----------------------------------------------------------
+* Function: DoorbellNote
+* Description: This function contains all the note of
+*               the C-Major scale. Note tuning was found by
+*               altering the pitch multiplication and using
+*               an outside tuner to create the correct pitch
+*               for each note.
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void DoorbellNote(char note){
     //C is 2882
     //B is 3054
@@ -55,6 +70,16 @@ void DoorbellNote(char note){
     }
 }
 
+/*-----------------------------------------------------------
+* Function: DoorbellNote
+* Description: This function contains all the notes and timings used to re-create
+*               the doorbell tone used at my home in Ann Arbor
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void HomeDoorbell(void){
 
     int small = 216, large = 300;
@@ -102,6 +127,16 @@ void HomeDoorbell(void){
     DoorbellNote('P');
 }
 
+/*-----------------------------------------------------------
+* Function: Dingdong
+* Description: This function when called plays a simple two note tone
+*               to simulate a basic "ding-dong" chime with the speaker
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void DingDong(void){
     DoorbellNote('C');
     delay_ms(600);
@@ -110,6 +145,16 @@ void DingDong(void){
     DoorbellNote('P');
 }
 
+/*-----------------------------------------------------------
+* Function: Buzzer
+* Description: This function when called plays a single low tone to
+*                   simulate an apartment buzzer with the speaker
+* Inputs:
+*              N/A
+*
+* Outputs:
+*              N/A
+*---------------------------------------------------------*/
 void Buzzer(void){
     DoorbellNote('Z');
     delay_ms(1500);
