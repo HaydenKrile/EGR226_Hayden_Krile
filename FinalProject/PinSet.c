@@ -30,6 +30,7 @@ void MasterPinSet(){
     DoorbellPinSet();
     BuzzerPinSet();
     ADCSetup();
+    LCDLEDPinSet();
 }
 
 /*-----------------------------------------------------------
@@ -114,7 +115,7 @@ void OnBoardLEDPinSet(void){
  *              N/A
  *---------------------------------------------------------*/
  void MotorPinSet(void){
-     //setup P2.4 as GPIO
+     //setup P5.7 as GPIO
      P5->SEL0 |= BIT7;
      P5->SEL1 &= ~BIT7;
      P5->DIR |= BIT7;
@@ -164,26 +165,40 @@ void OnBoardLEDPinSet(void){
  *---------------------------------------------------------*/
  void OffBoardLEDPinSet(void){
      //setup P2.5-7 as GPIO
-     P2->SEL0 |= (BIT4|BIT5|BIT6|BIT7);
-     P2->SEL1 &= ~(BIT4|BIT5|BIT6|BIT7);
-     P2->DIR |= (BIT4|BIT5|BIT6|BIT7);
-     //P2->REN |= BIT5;
-
+     P2->SEL0 |= (BIT5|BIT6|BIT7);
+     P2->SEL1 &= ~(BIT5|BIT6|BIT7);
+     P2->DIR |= (BIT5|BIT6|BIT7);
 
      //10000 cycles
      TIMER_A0->CCR[0] = 10000;
-     TIMER_A0->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[3] = TIMER_A_CCTLN_OUTMOD_7;
      TIMER_A0->CCTL[4] = TIMER_A_CCTLN_OUTMOD_7;
      //by default, sets the duty cycle to 0%
-     TIMER_A0->CCR[2] = 0;
      TIMER_A0->CCR[2] = 0;
      TIMER_A0->CCR[3] = 0;
      TIMER_A0->CCR[4] = 0;
      TIMER_A0->CTL = 0x0254;
  }
 
+ /*-----------------------------------------------------------
+ * Function: LCDLEDPinSet
+ * Description: This function sets up the pin fo the LCD LED
+ *
+ * Inputs:
+ *              N/A
+ *
+ * Outputs:
+ *              N/A
+ *---------------------------------------------------------*/
+void LCDLEDPinSet(void){
+    P2->SEL0 |= BIT4;
+    P2->SEL1 &= ~BIT4;
+    P2->DIR |= BIT4;
+
+    TIMER_A0->CCTL[1] = TIMER_A_CCTLN_OUTMOD_7;
+    TIMER_A0->CCR[2] = 0;
+}
  /*-----------------------------------------------------------
  * Function: DoorbellPinSet
  * Description: This function sets up the pins for the touch sensor
@@ -195,14 +210,14 @@ void OnBoardLEDPinSet(void){
  *              N/A
  *---------------------------------------------------------*/
  void DoorbellPinSet(void){
-     //set P3.7 as GPIO with internal pull-up resistor
+     //set P5.0 as GPIO with internal pull-up resistor
      P5->SEL1 &= ~BIT0;
      P5->SEL0 &= ~BIT0;
      P5->DIR &= ~BIT0;
      P5->REN |= BIT0;
      P5->OUT |= BIT0;
 
-     //enabling interrupts for pins 3.7
+     //enabling interrupts for pins 5.0
      P5->IES |= BIT0;
      P5->IFG = 0;
      P5->IE |= BIT0;

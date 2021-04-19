@@ -28,7 +28,6 @@
 *---------------------------------------------------------*/
 void DoorbellNote(char note){
     //C is 2882
-    //B is 3054
     float pitch = 2882;
     TIMER_A3->CCR[3] = 500;
 
@@ -82,7 +81,7 @@ void DoorbellNote(char note){
 *---------------------------------------------------------*/
 void HomeDoorbell(void){
 
-    int small = 216, large = 300;
+    int small = 215, large = 300;
 
     DoorbellNote('D');
     delay_ms(small);

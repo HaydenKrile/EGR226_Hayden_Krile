@@ -17,5 +17,6 @@ void PrintBrightnessMenu(void);
 void PrintDoorbell(void);
 void PrintDoorIsOpen(void);
 void PrintDoorIsClosed(void);
+void LCDLEDPinSet(void);
 
 #endif /* PRINTLCD_H_ */
