@@ -59,7 +59,13 @@ volatile double redPeriodTime, greenPeriodTime, bluePeriodTime;
 * Date:        04/09/2021
 * Project:     FinalProject
 * File:        main.c
-* Description: This program connects to the MSP432 and uses
+* Description: This program connects to the MSP432 and uses the keypad to allow the
+*               user to control the positional servo, DC Motor, and RGB LED. The LCD
+*               screen was incorperated to show the user which module they are operating
+*               at any point in time, and the 10K pot was used to control the brightness of the
+*               LCD screen through the ADC and a PWM signal. The touch sensor and speaker were incorperated to
+*               act as a doorbell that, when rung, would ask the user if they would like to
+*               open the door for the person waiting there.
 ***************************************************************************************/
 void main(void)
 {
